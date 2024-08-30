@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+    RouterProvider,
+} from "react-router-dom";
+import router from './admin/routes';
 
-function Hello(props) {
-    return <h1>Hello World!</h1>;
-}
 
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
-root.render(<Hello />);
+root.render(<RouterProvider router={router} />);
