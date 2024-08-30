@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +12,7 @@ use Inertia\Inertia;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::middleware('inertia')->group(function() {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Hello');
-    });
+
+Route::get('/dashboard', function () {
+    return view('Dashboard.app');
 });
