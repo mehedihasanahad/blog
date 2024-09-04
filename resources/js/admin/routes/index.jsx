@@ -16,7 +16,7 @@ const router = createBrowserRouter([
                 Component: lazy(() => import('../pages/Dashboard'))
             },
             {
-                path: 'blog',
+                path: 'blogs',
                 Component: lazy(() => import('../pages/Blog'))
             }
         ]

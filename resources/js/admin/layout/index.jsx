@@ -13,7 +13,7 @@ export default function Layout() {
             <Sidebar onClickFn={toggleSidebarFn}/>
             <div className="w-full">
                 <Header onClickFn={toggleSidebarFn}/>
-                <main className="bg-[#EEF3F8] p-7 min-h-[100vh]">
+                <main className="bg-[#EEF3F8] p-7 min-h-[calc(100vh-8.75rem)]">
                     <Outlet/>
                 </main>
                 <Footer/>

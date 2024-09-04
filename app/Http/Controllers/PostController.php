@@ -15,6 +15,9 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         try {
+            $limit = request()->limit;
+            $search = request()->search;
+
             $posts = Post::with([
                 'categories',
                 'comments',
@@ -22,12 +25,15 @@ class PostController extends Controller
                 'tags',
                 'user',
                 'post_views'
-            ])->get();
+            ])->when(!empty($search), function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+                $q->orWhere('slug', 'like', "%{$search}%");
+            })->paginate($limit ?? 10);
 
         } catch (\Exception $e) {
             return response()
                 ->commonJSONResponse(null,
-                    "Message: {$e->getLine()}, Line: {$e->getLine()}, File: {$e->getFile()}",
+                    "Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}",
                 'error', 500);
         }
 
