@@ -1,28 +1,26 @@
-import {useRef, useState} from "react";
+import {useRef, useState, useEffect} from "react";
 
-export default function Pagination( { data, onClick } ) {
-    const [currentPage, setCurrentPage] = useState(1);
+export default function Pagination( { data, onClick, currentPage } ) {
     const btnListWrapper = useRef("");
 
-    function handlePageClickFn(currentIndex) {
+    useEffect(() => {
+        data && handlePageClickFn(currentPage);
+    }, [currentPage]);
+
+    function handlePageClickFn(page) {
         [].forEach.call(btnListWrapper.current.children, (btn, index) => {
-            if (index === (currentIndex + 1)) {
+            if (index === (page)) {
                 btn.classList.remove('text-slate-500', 'bg-white', 'border-slate-200', 'hover:bg-slate-50', 'hover:border-slate-400');
                 btn.classList.add('text-white', 'bg-slate-800', 'border-slate-800', 'hover:bg-slate-600','hover:border-slate-600');
             } else {
-                btn.classList.add('text-slate-500', 'bg-white', 'border-slate-200', 'hover:bg-slate-50', 'hover:border-slate-400');
                 btn.classList.remove('text-white', 'bg-slate-800', 'border-slate-800', 'hover:bg-slate-600','hover:border-slate-600');
+                btn.classList.add('text-slate-500', 'bg-white', 'border-slate-200', 'hover:bg-slate-50', 'hover:border-slate-400');
             }
         });
-        onClick((currentIndex + 1), data.per_page);
-
-        setCurrentPage((currentIndex + 1));
     }
 
     function handleNextPrev(btnType) {
-        let page = (btnType === 'prev') ? (currentPage - 2) : currentPage;
-
-        handlePageClickFn(page);
+        (btnType === 'prev') ? onClick(() => currentPage - 1) : onClick(() => currentPage + 1);
     }
 
     return (
@@ -34,7 +32,7 @@ export default function Pagination( { data, onClick } ) {
                 Prev
             </button>
             {
-                data?.last_page ? [...Array(data?.last_page)].map((page, index) => {
+                data?.last_page && [...Array(data?.last_page)].map((page, index) => {
                     return (
                         <button
                             key={index}
@@ -42,12 +40,12 @@ export default function Pagination( { data, onClick } ) {
                             ${(index === 0) ? 'text-white bg-slate-800 border-slate-800 hover:bg-slate-600 hover:border-slate-600' :
                                 'text-slate-500 bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-400'}
                                 rounded transition duration-200 ease`}
-                            onClick={ (e) => handlePageClickFn(index)}
+                            onClick={ (e) => onClick(index + 1)}
                         >
                             {index + 1}
                         </button>
                     );
-                }) : null
+                })
             }
             <button
                 onClick={ () => handleNextPrev('next')}

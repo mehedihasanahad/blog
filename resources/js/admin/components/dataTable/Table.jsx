@@ -52,26 +52,26 @@ export default function Table({ data }) {
                         <td className="p-4 py-5">
                             <div className="text-sm text-slate-500">
                                 {
-                                    item?.categories ? item?.categories.map( (category) => {
+                                    item?.categories && item?.categories.map( (category) => {
                                         return (
                                             <div className={"w-fit p-1 border rounded mt-1 ml-1 inline-block bg-gray-600 text-white"} key={category?.id}>
                                                 {category?.name}
                                             </div>
                                         );
-                                    }) : null
+                                    })
                                 }
                             </div>
                         </td>
                         <td className="p-4 py-5">
                             <div className="text-sm text-slate-500">
                                 {
-                                    item?.tags ? item?.tags.map( (tag) => {
+                                    item?.tags && item?.tags.map( (tag) => {
                                         return (
                                             <div className={"w-fit p-1 border rounded mt-1 ml-1 inline-block bg-green-600 text-white"} key={tag?.id}>
                                                 {tag?.name}
                                             </div>
                                         );
-                                    }) : null
+                                    })
                                 }
                             </div>
                         </td>

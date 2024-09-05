@@ -1,19 +1,27 @@
 import Table from "@/admin/components/dataTable/Table";
 import Pagination from "@/admin/components/dataTable/Pagination";
 import TableSearch from "@/admin/components/dataTable/TableSearch";
+import {Vortex} from 'react-loader-spinner'
 import {useEffect, useState} from "react";
 
 export default function DataTables({ endPoint }) {
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(getBlogPostsFn, []);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState('10');
+    const [search, setSearch] = useState('');
 
-    function getBlogPostsFn(page = 1, limit = 10, search = '') {
+    useEffect(getBlogPostsFn, [limit, page, search]);
+
+    function getBlogPostsFn() {
+        setLoading(true);
         $axios.get(`${endPoint}?page=${page}&limit=${limit}&search=${search}`)
             .then( (res) => {
                 setData({
                     ...res.data.data
                 });
+                setLoading(false);
             })
             .catch(error => {
                 console.error(error);
@@ -25,7 +33,10 @@ export default function DataTables({ endPoint }) {
         <div className="mx-auto">
             <div className="w-full flex justify-between items-center mb-3 mt-1">
                 <div>
-                    <select className="border p-1 rounded-md" onChange={(e) => getBlogPostsFn(1, e.target.value)}>
+                    <select className="border p-1 rounded-md" onChange={(e) => {
+                        setLimit(() => e.target.value);
+                        setPage(() => 1);
+                    }}>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -33,21 +44,39 @@ export default function DataTables({ endPoint }) {
                 </div>
                 <div className="ml-3">
                     {/*search component*/}
-                    <TableSearch onInput={getBlogPostsFn}/>
+                    <TableSearch onInput={setSearch} value={search} handlePage={setPage}/>
                 </div>
             </div>
 
             <div
                 className="relative flex flex-col w-full h-full overflow-auto text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
 
+                {
+                    loading &&
+                        <>
+                            <div className="absolute bg-gray-50 opacity-70 h-full w-full"></div>
+                            <div className="absolute top-[calc(50%-40px)] left-[calc(50%-40px)]">
+                                <Vortex
+                                    visible={true}
+                                    height="80"
+                                    width="80"
+                                    ariaLabel="vortex-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClass="vortex-wrapper"
+                                    colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
+                                />
+                            </div>
+                        </>
+                }
+
                 {/*table component*/}
                 <Table data={data?.data}/>
                 <div className="flex justify-between items-center px-4 py-3">
                     <div className="text-sm text-slate-500">
-                        Showing <b>1-5</b> of 45
+                        Showing {(data?.from || data?.to) ? <b>{data?.from}-{data.to}</b> : 0} of {data?.total}
                     </div>
                     {/*pagination component*/}
-                    <Pagination data={data} onClick={getBlogPostsFn}/>
+                    <Pagination data={data} onClick={setPage} currentPage={page}/>
                 </div>
             </div>
         </div>
