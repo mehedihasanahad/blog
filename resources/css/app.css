@@ -7,6 +7,14 @@
     .custom-btn-sky-600 {
         @apply px-3 py-1 border rounded bg-sky-600 text-white;
     }
+
+    .custom-btn-border-gray-300 {
+        @apply rounded-md outline outline-1 outline-gray-500 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600
+    }
+
+    .custom-btn-primary {
+        @apply rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600;
+    }
 }
 
 /*custom scrollbar style*/

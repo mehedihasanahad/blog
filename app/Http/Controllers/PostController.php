@@ -32,16 +32,14 @@ class PostController extends Controller
 
         } catch (\Exception $e) {
             return response()
-                ->commonJSONResponse(null,
-                    "Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}",
-                'error', 500);
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
         }
 
         if (empty($posts)) return response()
-            ->commonJSONResponse(null, 'Resource not found.', 'failed', 404);
+            ->commonJSONResponse('Resource not found.', 404, 'failed');
 
         return response()
-            ->commonJSONResponse($posts, 'Data retrieved successfully');
+            ->commonJSONResponse('Data retrieved successfully', 200, 'success', $posts);
     }
 
     /**
