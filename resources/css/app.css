@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    .custom-btn-sky-600 {
+        @apply px-3 py-1 border rounded bg-sky-600 text-white;
+    }
+}
+
+/*custom scrollbar style*/
+    /* width */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #a6a5a5;
+    }
+
+    /* Handle on hover */
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #858484;
+    }
+/*custom scrollbar style*/

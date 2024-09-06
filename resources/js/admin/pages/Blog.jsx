@@ -1,4 +1,5 @@
 import DataTables from "@/admin/components/dataTable";
+import {Link} from "react-router-dom";
 
 export default function Blog() {
     const config = {
@@ -67,6 +68,11 @@ export default function Blog() {
     }
 
     return (
-        <DataTables endPoint="posts" config={config}/>
+        <>
+            <div className="flex justify-end mb-2">
+                <Link to="/admin/posts/create" className="custom-btn-sky-600">Create Post</Link>
+            </div>
+            <DataTables endPoint="posts" config={config}/>
+        </>
     )
 }
