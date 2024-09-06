@@ -4,7 +4,7 @@ import TableSearch from "@/admin/components/dataTable/TableSearch";
 import {Vortex} from 'react-loader-spinner'
 import {useEffect, useState} from "react";
 
-export default function DataTables({ endPoint }) {
+export default function DataTables({ endPoint, config }) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -70,7 +70,7 @@ export default function DataTables({ endPoint }) {
                 }
 
                 {/*table component*/}
-                <Table data={data?.data}/>
+                <Table data={data?.data} config={config}/>
                 <div className="flex justify-between items-center px-4 py-3">
                     <div className="text-sm text-slate-500">
                         Showing {(data?.from || data?.to) ? <b>{data?.from}-{data.to}</b> : 0} of {data?.total}
