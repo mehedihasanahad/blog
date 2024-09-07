@@ -8,8 +8,9 @@ import { lazy, Suspense } from "react";
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Posts = lazy(() => import('../pages/Blog'));
 const CreatePost = lazy(() => import('../pages/CreateBlog'));
-const Category = lazy(() => import('../pages/Category'));
-const CreateCategory = lazy(() => import('../pages/CreateCategory'));
+const Category = lazy(() => import('../pages/category/Category'));
+const CreateCategory = lazy(() => import('../pages/category/CreateCategory'));
+const EditCategory = lazy(() => import('../pages/category/EditCategory'));
 
 const router = createBrowserRouter([
     {
@@ -55,6 +56,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<div>Loading...</div>}>
                         <CreateCategory />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'categories/edit/:id',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <EditCategory />
                     </Suspense>
                 ),
             },

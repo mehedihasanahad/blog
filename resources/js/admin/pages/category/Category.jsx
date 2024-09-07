@@ -31,7 +31,7 @@ export default function Category() {
                             }
                         </td>
                         <td className="p-4 py-5">
-                            <button className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</button>
+                            <Link to={'/admin/categories/edit/' + item?.id} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
                         </td>
                     </tr>
                 );

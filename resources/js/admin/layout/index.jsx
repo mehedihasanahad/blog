@@ -3,6 +3,7 @@ import Footer from "./Footer.jsx";
 import Header from './Header.jsx';
 import Sidebar from "./Sidebar.jsx";
 import { useCallback } from "react";
+import {Toaster} from "react-hot-toast";
 
 export default function Layout() {
     const toggleSidebarFn = useCallback(() => {
@@ -14,6 +15,10 @@ export default function Layout() {
             <div className="w-full">
                 <Header onClickFn={toggleSidebarFn}/>
                 <main className="bg-[#EEF3F8] p-7 min-h-[calc(100vh-8.75rem)]">
+                    <Toaster
+                        position="top-center"
+                        reverseOrder={false}
+                    />
                     <Outlet/>
                 </main>
                 <Footer/>

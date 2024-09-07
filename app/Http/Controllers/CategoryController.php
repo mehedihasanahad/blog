@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class CategoryController extends Controller
 {
@@ -22,7 +24,8 @@ class CategoryController extends Controller
             $categories = Category::when(!empty($search), function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
                 $q->orWhere('slug', 'like', "%{$search}%");
-            })->paginate($limit ?? 10);
+            })->orderByDesc('id')
+            ->paginate($limit ?? 10);
 
         } catch (\Exception $e) {
             return response()
@@ -49,7 +52,7 @@ class CategoryController extends Controller
             $category = new Category();
             $category->name = $validated_data['name'];
             $category->slug = $validated_data['slug'];
-            $category->description = $validated_data['descriptions'];
+            $category->description = $validated_data['description'];
             $category->status = $validated_data['status'];
 
         } catch (\Exception $e) {
@@ -75,9 +78,27 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
-        //
+        try {
+            $validated_data = $request->validated();
+
+            $category = Category::find(Crypt::decryptString($id));
+            $category->name = $validated_data['name'];
+            $category->slug = $validated_data['slug'];
+            $category->description = $validated_data['description'];
+            $category->status = $validated_data['status'];
+
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($category->save())) return response()
+            ->commonJSONResponse('Failed to update the category', 500, 'failed');
+
+        return response()
+            ->commonJSONResponse('Category updated successfully');
     }
 
     /**

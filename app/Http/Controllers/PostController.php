@@ -28,7 +28,8 @@ class PostController extends Controller
             ])->when(!empty($search), function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%");
                 $q->orWhere('slug', 'like', "%{$search}%");
-            })->paginate($limit ?? 10);
+            })->orderByDesc('id')
+            ->paginate($limit ?? 10);
 
         } catch (\Exception $e) {
             return response()
