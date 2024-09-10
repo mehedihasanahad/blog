@@ -71,8 +71,8 @@ export default function DataTables({ endPoint, config }) {
 
                 {/*table component*/}
                 <Table data={data?.data} config={config}/>
-                <div className="flex justify-between items-center px-4 py-3">
-                    <div className="text-sm text-slate-500">
+                <div className="flex flex-col sm:flex-row justify-between items-center px-4 py-3">
+                    <div className="text-sm text-slate-500 mb-4 sm:mb-0">
                         Showing {(data?.from || data?.to) ? <b>{data?.from}-{data.to}</b> : 0} of {data?.total}
                     </div>
                     {/*pagination component*/}
