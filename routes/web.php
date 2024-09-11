@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +19,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
     return view('Dashboard.app');
+});
+
+Route::get('/factory', function() {
+    // $user = User::factory()->count(20)->make();
+
+    // foreach ($user as $key => $value) {
+    //     $value->save();
+    // }
+
+
+    $user = Post::factory()->count(20)->make();
+
+    foreach ($user as $key => $value) {
+        $value->save();
+    }
+
+
+
 });
