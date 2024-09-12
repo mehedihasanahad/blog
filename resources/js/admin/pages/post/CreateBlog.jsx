@@ -3,12 +3,13 @@ import { useImmer } from "use-immer";
 import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useState, useEffect} from "react";
+import Editor from "../../components/editor.jsx";
 
 export default function Blog() {
     const [categoryFormData, setCategoryFormData] = useImmer({
         name: '',
         slug: '',
-        description: '',
+        content: '',
         status: 1
     });
     const [errors, setErrors] = useState(null);
@@ -70,7 +71,6 @@ export default function Blog() {
                                        onInput={(e) => updateFormData('name', e.target.value)}
                                        name="name"
                                        id="name"
-                                       autoComplete="given-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
                             </div>
@@ -86,9 +86,25 @@ export default function Blog() {
                                        value={categoryFormData.slug}
                                        onInput={(e) => updateFormData('slug', e.target.value)}
                                        id="slug"
-                                       autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="slug" className="block text-sm font-medium leading-6 text-gray-900">
+                                Content
+                            </label>
+                            <div className="mt-2">
+                                <Editor
+                                name="content"
+                                editorState={categoryFormData.content}
+                                onEditorStateChange={(stateContent) => updateFormData('content', stateContent)}
+                                id="content"
+                                className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                    'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}
+                                />
+
                             </div>
                         </div>
 
@@ -101,7 +117,6 @@ export default function Blog() {
                                         id="status"
                                         value={categoryFormData.status}
                                         onChange={(e) => updateFormData('status', e.target.value)}
-                                        autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
                                     <option value="1">Active</option>

@@ -7,4 +7,10 @@ export default defineConfig({
         laravel(['resources/js/app.jsx', 'resources/css/app.css']),
         react(),
     ],
+    optimizeDeps: {
+        exclude: ['js-big-decimal']
+    },
+    define: {
+        global: 'window',
+    },
 });

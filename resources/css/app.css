@@ -38,3 +38,18 @@
         background: #858484;
     }
 /*custom scrollbar style*/
+
+
+/* text editor css */
+.rdw-editor-wrapper {
+    border: 1px solid rgb(206, 205, 205) !important;
+    border-radius: 0 0 5px 5px;
+    background-color: white !important;
+    border-bottom: 1px solid rgb(206, 205, 205) !important;
+}
+
+.rdw-editor-main {
+    padding: 0 10px !important;
+    min-height: 200px !important;
+}
+/* text editor css */
