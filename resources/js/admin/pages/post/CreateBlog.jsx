@@ -1,30 +1,29 @@
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useImmer } from "use-immer";
 import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
-import {useEffect, useState} from "react";
+import {useState, useEffect} from "react";
 
-export default function EditTag() {
-    const { state: categoryData } = useLocation();
+export default function Blog() {
     const [categoryFormData, setCategoryFormData] = useImmer({
-        _method: 'PUT',
-        ...categoryData
+        name: '',
+        slug: '',
+        description: '',
+        status: 1
     });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
-    // update input state onchange event
     function updateFormData(property, value) {
         setCategoryFormData((draft) => {
             draft[property] = value;
         });
     }
 
-    // handle category edit form submission
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post(`tags/${categoryFormData.id}`, useFormData(categoryFormData))
+        $axios.post('tags', useFormData(categoryFormData))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');
@@ -37,7 +36,6 @@ export default function EditTag() {
             })
     }
 
-    // handle error depends on errors state
     function handleInputError() {
         for (const errorsKey in errors) {
             if (errors[errorsKey].length > 0)
@@ -53,7 +51,6 @@ export default function EditTag() {
         }
     }
 
-    // call handleInputError method when the errors stage will be changed
     useEffect(() => {
         handleInputError();
     }, [errors])

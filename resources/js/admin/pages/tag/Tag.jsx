@@ -31,7 +31,7 @@ export default function Tag() {
                             }
                         </td>
                         <td className="p-4 py-5">
-                            <Link to={'/admin/categories/edit/' + item?.id} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
+                            <Link to={'/admin/tags/edit/' + item?.id} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
                         </td>
                     </tr>
                 );
@@ -42,9 +42,9 @@ export default function Tag() {
     return (
         <>
             <div className="flex justify-end mb-2">
-                <Link to="/admin/categories/create" className="custom-btn-sky-600">Create Category</Link>
+                <Link to="/admin/tags/create" className="custom-btn-sky-600">Create Tag</Link>
             </div>
-            <DataTables endPoint="categories" config={config}/>
+            <DataTables endPoint="tags" config={config}/>
         </>
     )
 }
