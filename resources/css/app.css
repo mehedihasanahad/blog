@@ -51,5 +51,6 @@
 .rdw-editor-main {
     padding: 0 10px !important;
     min-height: 200px !important;
+    max-height: 300px !important;
 }
 /* text editor css */

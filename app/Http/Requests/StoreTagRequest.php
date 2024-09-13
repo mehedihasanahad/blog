@@ -22,8 +22,8 @@ class StoreTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:App\Models\Category,name|string',
-            'slug' => 'required|unique:App\Models\Category,slug|string',
+            'name' => 'required|unique:App\Models\Tag,name|string',
+            'slug' => 'required|unique:App\Models\Tag,slug|string',
             'status' => 'required',
         ];
     }

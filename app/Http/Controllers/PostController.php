@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,9 +47,31 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
+        try {
+            $validated_data = $request->validated();
+
+            dd($validated_data);
+
+            $post = new Post();
+            $post->user_id = 1; // TO-DO:: user_id will auth user id
+            $post->title = $validated_data['title'];
+            $post->slug = $validated_data['slug'];
+            $post->content = $validated_data['content'];
+            $post->featured_image = $request->featured_image->store('admin/post');
+            $post->is_published = $validated_data['is_published'];
+
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($post->save())) return response()
+            ->commonJSONResponse('Failed to create new post', 500, 'failed');
+
+        return response()
+            ->commonJSONResponse('Post created successfully');
     }
 
     /**

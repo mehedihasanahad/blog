@@ -21,5 +21,9 @@ use App\Http\Controllers\TagController;
 //});
 
 Route::apiResource('posts', PostController::class);
+
+Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
 Route::apiResource('categories', CategoryController::class);
+
+Route::get('/tags/active', [TagController::class, 'getActiveList']);
 Route::apiResource('tags', TagController::class);

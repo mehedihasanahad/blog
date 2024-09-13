@@ -108,4 +108,23 @@ class CategoryController extends Controller
     {
         //
     }
+
+    /**
+     * get active category resources.
+     * @return JsonResponse
+     */
+    public function getActiveList() {
+        try {
+            $categories = Category::where('status', 1)->orderByDesc('id')->get();
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($categories)) return response()
+            ->commonJSONResponse('Resource not found.', 404, 'failed');
+
+        return response()
+            ->commonJSONResponse('Data retrieved successfully', 200, 'success', $categories);
+    }
 }

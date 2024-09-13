@@ -106,4 +106,23 @@ class TagController extends Controller
     {
         //
     }
+
+    /**
+     * get active category resources.
+     * @return JsonResponse
+     */
+    public function getActiveList() {
+        try {
+            $tags = Tag::where('status', 1)->orderByDesc('id')->get();
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($tags)) return response()
+            ->commonJSONResponse('Resource not found.', 404, 'failed');
+
+        return response()
+            ->commonJSONResponse('Data retrieved successfully', 200, 'success', $tags);
+    }
 }
