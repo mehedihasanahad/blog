@@ -1,26 +1,26 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useImmer } from "use-immer";
 import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useState, useEffect} from "react";
 import Editor from "../../components/editor.jsx";
 import { stateToHTML } from 'draft-js-export-html';
+import {stateFromHTML} from 'draft-js-import-html';
+import { EditorState } from 'draft-js';
 import Select from 'react-select';
 
-export default function CreateBlog() {
+export default function EditBlog() {
     const [categoryList, setCategoryList] = useState([]);
     const [tagList, setTagList] = useState(null);
+
+    const { state: postData } = useLocation();
+
     const [postFormData, setPostFormData] = useImmer({
-        title: '',
-        slug: '',
-        contentRaw: '',
-        content: '',
-        is_published: 0,
-        featured_image: '',
-        featured_image_url: '',
-        categories: [],
-        tags: []
+        _method: 'PUT',
+        ...postData,
+        contentRaw: EditorState.createWithContent(stateFromHTML(postData?.content ?? ''))
     });
+
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 

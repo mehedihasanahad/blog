@@ -2,15 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Crypt;
 
 class Post extends Model
 {
     use HasFactory;
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['id_enc'];
 
     /**
      * get categories with post
@@ -62,5 +71,14 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function idEnc() : Attribute {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => Crypt::encryptString($attributes['id'])
+        );
     }
 }

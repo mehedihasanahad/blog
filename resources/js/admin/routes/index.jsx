@@ -10,6 +10,7 @@ const Dashboard = lazy(() => import('../pages/Dashboard'));
 // Post pages
 const Posts = lazy(() => import('../pages/post/Blog'));
 const CreatePost = lazy(() => import('../pages/post/CreateBlog'));
+const EditPost = lazy(() => import('../pages/post/EditBlog'));
 
 // Category pages
 const Category = lazy(() => import('../pages/category/Category'));
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<div>Loading...</div>}>
                         <CreatePost />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'posts/edit/:id',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <EditPost />
                     </Suspense>
                 )
             },

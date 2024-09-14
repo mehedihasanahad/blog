@@ -3,9 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostCategory;
+use App\Models\PostTag;
+use App\Models\Tag;
+use Carbon\Carbon;
+use Error;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -51,9 +59,12 @@ class PostController extends Controller
     {
         try {
             $validated_data = $request->validated();
+            $categories = json_decode($validated_data['categories'], true);
+            $tags = json_decode($validated_data['tags'], true);
 
-            dd($validated_data);
+            DB::beginTransaction();
 
+            // Create Post
             $post = new Post();
             $post->user_id = 1; // TO-DO:: user_id will auth user id
             $post->title = $validated_data['title'];
@@ -61,8 +72,45 @@ class PostController extends Controller
             $post->content = $validated_data['content'];
             $post->featured_image = $request->featured_image->store('admin/post');
             $post->is_published = $validated_data['is_published'];
+            $post->published_at = Carbon::now();
+            $post->save();
+
+            // Categories added through pivote table
+            if (!is_array($categories) || empty($categories)) 
+                throw new \Exception("Categories must be array and can't be empty");
+
+            foreach($categories as $cat_key => $category) {
+                $category_data = Category::find(Crypt::decryptString($category['id']));
+                if (!$category_data)
+                    throw new \Exception('Invalid Category data found');
+
+                $post_category = new PostCategory();
+                $post_category->post_id = $post->id;
+                $post_category->category_id = Crypt::decryptString($category['id']);
+                
+                if (empty($post_category->save()))
+                    throw new \Exception('Failed to create new post_category pivote record');
+            }
+
+            // Tags added through pivote table
+            if (!is_array($tags) || empty($tags))
+                throw new \Exception("Tags must be array and can't be empty");
+
+            foreach($tags as $tag_key => $tag) {
+                $tag_data = Tag::find(Crypt::decryptString($tag['id']));
+                if (!$tag_data)
+                    throw new \Exception('Invalid Tag data found');
+
+                $post_tag = new PostTag();
+                $post_tag->post_id = $post->id;
+                $post_tag->tag_id = Crypt::decryptString($tag['id']);
+                
+                if (empty($post_tag->save()))
+                    throw new \Exception('Failed to create new post_tag pivote record');
+            }
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()
                 ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
         }
@@ -70,6 +118,7 @@ class PostController extends Controller
         if (empty($post->save())) return response()
             ->commonJSONResponse('Failed to create new post', 500, 'failed');
 
+        DB::commit();
         return response()
             ->commonJSONResponse('Post created successfully');
     }

@@ -26,7 +26,7 @@ export default function Blog() {
                             <p className="text-sm text-slate-500"> { item?.slug } </p>
                         </td>
                         <td className="px-3 py-2">
-                            <div className="text-sm text-slate-500">
+                            <div className="text-sm text-slate-500 max-w-96">
                                 {
                                     item?.categories && item?.categories.map( (category) => {
                                         return (
@@ -39,7 +39,7 @@ export default function Blog() {
                             </div>
                         </td>
                         <td className="px-3 py-2">
-                            <div className="text-sm text-slate-500">
+                            <div className="text-sm text-slate-500 max-w-96">
                                 {
                                     item?.tags && item?.tags.map( (tag) => {
                                         return (
@@ -59,7 +59,7 @@ export default function Blog() {
                             }
                         </td>
                         <td className="p-4 py-5">
-                            <button className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</button>
+                            <Link to={'/admin/posts/edit/' + item?.id_enc} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
                         </td>
                     </tr>
                 );
