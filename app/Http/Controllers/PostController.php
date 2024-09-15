@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostCategory;
@@ -54,8 +55,10 @@ class PostController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param StorePostRequest $request
+     * @return JsonResponse
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request): JsonResponse
     {
         try {
             $validated_data = $request->validated();
@@ -70,7 +73,7 @@ class PostController extends Controller
             $post->title = $validated_data['title'];
             $post->slug = $validated_data['slug'];
             $post->content = $validated_data['content'];
-            $post->featured_image = $request->featured_image->store('admin/post');
+            $post->featured_image = "/uploads/" . $validated_data['featured_image']->store('admin/post');
             $post->is_published = $validated_data['is_published'];
             $post->published_at = Carbon::now();
             $post->save();
@@ -133,10 +136,84 @@ class PostController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @param UpdatePostRequest $request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, string $id): JsonResponse
     {
-        //
+        try {
+            $validated_data = $request->validated();
+            $id = Crypt::decryptString($id);
+
+            $categories = json_decode($validated_data['categories'], true);
+            $category_ids = array_map(fn ($category) => Crypt::decryptString($category['id']), $categories);
+
+            $tags = json_decode($validated_data['tags'], true);
+            $tag_ids = array_map(fn ($tag) => Crypt::decryptString($tag['id']), $tags);
+
+            DB::beginTransaction();
+
+            // Update Post
+            $post = Post::find($id);
+            $post->user_id = 1; // TO-DO:: user_id will auth user id
+            $post->title = $validated_data['title'];
+            $post->slug = $validated_data['slug'];
+            $post->content = $validated_data['content'];
+            if (!empty($validated_data['featured_image']))
+                $post->featured_image = "/uploads/" . $validated_data['featured_image']->store('admin/post');
+            $post->is_published = $validated_data['is_published'];
+            $post->published_at = Carbon::now();
+            $post->save();
+
+            // Categories added through pivote table
+            PostCategory::where('post_id', $id)->delete();
+            if (!is_array($categories) || empty($categories))
+                throw new \Exception("Categories must be array and can't be empty");
+
+            foreach($categories as $cat_key => $category) {
+                $category_data = Category::find(Crypt::decryptString($category['id']));
+                if (!$category_data)
+                    throw new \Exception('Invalid Category data found');
+
+                $post_category = new PostCategory();
+                $post_category->post_id = $post->id;
+                $post_category->category_id = Crypt::decryptString($category['id']);
+                
+                if (empty($post_category->save()))
+                    throw new \Exception('Failed to update post_category pivote record');
+            }
+
+            // Tags added through pivote table
+            PostTag::where('post_id', $id)->delete();
+            if (!is_array($tags) || empty($tags))
+                throw new \Exception("Tags must be array and can't be empty");
+
+            foreach($tags as $tag_key => $tag) {
+                $tag_data = Tag::find(Crypt::decryptString($tag['id']));
+                if (!$tag_data)
+                    throw new \Exception('Invalid Tag data found');
+
+                $post_tag = new PostTag();
+                $post_tag->post_id = $post->id;
+                $post_tag->tag_id = Crypt::decryptString($tag['id']);
+                
+                if (empty($post_tag->save()))
+                    throw new \Exception('Failed to update post_tag pivote record');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($post->save())) return response()
+            ->commonJSONResponse('Failed to update the post', 500, 'failed');
+
+        DB::commit();
+        return response()
+            ->commonJSONResponse('Post updated successfully');
     }
 
     /**

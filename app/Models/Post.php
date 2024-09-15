@@ -22,6 +22,13 @@ class Post extends Model
     protected $appends = ['id_enc'];
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
      * get categories with post
      * @return BelongsToMany
      */

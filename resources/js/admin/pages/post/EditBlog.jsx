@@ -52,7 +52,7 @@ export default function EditBlog() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post('posts', useFormData({
+        $axios.post(`posts/${postFormData.id_enc}`, useFormData({
             ...postFormData,
             categories: JSON.stringify(postFormData.categories),
             tags: JSON.stringify(postFormData.tags),
@@ -212,6 +212,11 @@ export default function EditBlog() {
                                 {
                                     postFormData.featured_image_url && 
                                     <img src={postFormData.featured_image_url} height="100" width="100" className="object-contain"/>
+                                }
+
+                                {
+                                    postFormData.featured_image && 
+                                    <img src={postFormData.featured_image} height="100" width="100" className="object-contain"/>
                                 }
                             </div>
                         </div>
