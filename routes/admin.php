@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{route_name}', function (string $route_name) {
-    return view('Dashboard.app');
+    return view('Admin.app');
 })->where('route_name', '.*');

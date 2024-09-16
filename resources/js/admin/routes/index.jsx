@@ -22,6 +22,9 @@ const Tag = lazy(() => import('../pages/tag/Tag'));
 const CreateTag = lazy(() => import('../pages/tag/CreateTag'));
 const EditTag = lazy(() => import('../pages/tag/EditTag'));
 
+// Login page
+const Login = lazy(() => import('../pages/Login'));
+
 const router = createBrowserRouter([
     {
         path: "/admin/",
@@ -109,7 +112,15 @@ const router = createBrowserRouter([
                 )
             },
         ]
-    }
+    },
+    {
+        path: '/admin/login',
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+                <Login />
+            </Suspense>
+        )
+    },
 ], {
     // basename: 'admin'
 });

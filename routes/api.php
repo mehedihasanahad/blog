@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,9 @@ use App\Http\Controllers\TagController;
 //    return $request->user();
 //});
 
+Route::middleware(['web'])->group(function() {
+
+
 Route::apiResource('posts', PostController::class);
 
 Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
@@ -27,3 +32,9 @@ Route::apiResource('categories', CategoryController::class);
 
 Route::get('/tags/active', [TagController::class, 'getActiveList']);
 Route::apiResource('tags', TagController::class);
+
+Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/get-userinfo', [UserController::class, 'getUserInfo']);
+
+});

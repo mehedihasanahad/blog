@@ -18,23 +18,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/dashboard', function () {
-    return view('Dashboard.app');
-});
-
-Route::get('/factory', function() {
-    // $user = User::factory()->count(20)->make();
-
-    // foreach ($user as $key => $value) {
-    //     $value->save();
-    // }
-
-
-    $user = Post::factory()->count(20)->make();
-
-    foreach ($user as $key => $value) {
-        $value->save();
-    }
-
-
-
+    return view('Admin.app');
 });
