@@ -22,7 +22,7 @@ export default function Layout() {
             console.error(error.response.message);
             navigate('/admin/login');
         });
-    }, [location.pathname]);
+    }, []);
 
     
 

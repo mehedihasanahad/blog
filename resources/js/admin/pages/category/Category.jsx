@@ -1,7 +1,12 @@
 import DataTables from "@/admin/components/dataTable";
 import {Link} from "react-router-dom";
+import { userInfoContext } from "../../../store";
+import { useContext } from "react";
 
 export default function Category() {
+    // const userInfo = useContext(userInfoContext);
+    // console.log(userInfo);
+
     const config = {
         header: [
             'SL',
