@@ -25,6 +25,11 @@ const EditTag = lazy(() => import('../pages/tag/EditTag'));
 // Login page
 const Login = lazy(() => import('../pages/Login'));
 
+// User pages
+const User = lazy(() => import('../pages/user/User'));
+const CreateUser = lazy(() => import('../pages/user/CreateUser'));
+const EditUser = lazy(() => import('../pages/user/EditUser'));
+
 const router = createBrowserRouter([
     {
         path: "/admin/",
@@ -108,6 +113,30 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<div>Loading...</div>}>
                         <EditTag />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'users',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <User />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'users/create',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <CreateUser />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'users/edit/:id',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <EditUser />
                     </Suspense>
                 )
             },

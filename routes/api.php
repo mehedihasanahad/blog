@@ -24,17 +24,17 @@ use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['web'])->group(function() {
 
+    Route::apiResource('posts', PostController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('tags', TagController::class);
+    Route::apiResource('users', UserController::class);
 
-Route::apiResource('posts', PostController::class);
 
-Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
-Route::apiResource('categories', CategoryController::class);
+    Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
+    Route::get('/tags/active', [TagController::class, 'getActiveList']);
 
-Route::get('/tags/active', [TagController::class, 'getActiveList']);
-Route::apiResource('tags', TagController::class);
 
-Route::post('/login', [UserController::class, 'login']);
-
-Route::get('/get-userinfo', [UserController::class, 'getUserInfo']);
+    Route::post('/login', [UserController::class, 'login']);
+    Route::get('/get-userinfo', [UserController::class, 'getUserInfo']);
 
 });

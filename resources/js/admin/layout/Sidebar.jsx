@@ -88,6 +88,23 @@ function Sidebar({ onClickFn }) {
                             Posts
                         </Link>
 
+                        <Link to="/admin/users" className={
+                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
+                            (
+                                (
+                                    (currentPath === 'users') ||
+                                    (currentPath === 'users/create')
+                                ) && ' !bg-gray-200'
+                            )
+                        }>
+                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            Users
+                        </Link>
+
                         <a href="/" className="flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group">
                             <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
                                  stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
