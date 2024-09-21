@@ -1,10 +1,11 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
 function Sidebar({ onClickFn }) {
     const location = useLocation();
     const currentPath = location.pathname.substring(7);
+    const [userDropdown, setUserDropdown] = useState(false);
 
     return (
         <>
@@ -88,22 +89,82 @@ function Sidebar({ onClickFn }) {
                             Posts
                         </Link>
 
-                        <Link to="/admin/users" className={
-                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
-                            (
-                                (
-                                    (currentPath === 'users') ||
-                                    (currentPath === 'users/create')
-                                ) && ' !bg-gray-200'
-                            )
-                        }>
-                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
-                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                            Users
-                        </Link>
+                        {/* dropwodn menu */}
+                        <ul className="mt-0 flex flex-col">
+                            <li className="relative transition">
+                                <input className="peer hidden" type="checkbox" id="menu-1" />
+                                <div className="relative m-2 flex items-center rounded-xl border-b-4 border-gray-300 bg-gray-50 py-3 pl-5 text-sm text-gray-500">
+                                    <span className="mr-5 flex w-5 text-gray-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                            <path fill="currentColor" d="M13 19h6V9.978l-7-5.444-7 5.444V19h6v-6h2v6zm8 1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.49a1 1 0 0 1 .386-.79l8-6.222a1 1 0 0 1 1.228 0l8 6.222a1 1 0 0 1 .386.79V20z" />
+                                        </svg>
+                                    </span>
+                                    User Management
+                                    <label htmlFor="menu-1" className="absolute inset-0 h-full w-full cursor-pointer"></label>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="peer-checked:rotate-180 absolute right-0 top-6 mr-5 ml-auto h-4 text-gray-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                                <ul className="duration-400 peer-checked:max-h-96 m-2 flex max-h-0 flex-col overflow-hidden transition-all duration-300">
+                                    <li className="cursor-pointer rounded-xl py-2 text-sm text-gray-500">
+                                        <Link to="/admin/users" className={
+                                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
+                                            (
+                                                (
+                                                    (currentPath === 'users') ||
+                                                    (currentPath === 'users/create')
+                                                ) && ' !bg-gray-200'
+                                            )
+                                        }>
+                                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                            Users
+                                        </Link>
+                                    </li>
+
+                                    <li className="cursor-pointer rounded-xl pb-2 text-sm text-gray-500">
+                                        <Link to="/admin/roles" className={
+                                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
+                                            (
+                                                (
+                                                    (currentPath === 'roles') ||
+                                                    (currentPath === 'roles/create')
+                                                ) && ' !bg-gray-200'
+                                            )
+                                        }>
+                                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                            Roles
+                                        </Link>
+                                    </li>
+
+                                    <li className="cursor-pointer rounded-xl pb-2 text-sm text-gray-500">
+                                        <Link to="/admin/permissions" className={
+                                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
+                                            (
+                                                (
+                                                    (currentPath === 'permissions') ||
+                                                    (currentPath === 'permissions/create')
+                                                ) && ' !bg-gray-200'
+                                            )
+                                        }>
+                                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                            </svg>
+                                            Permissions
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
 
                         <a href="/" className="flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group">
                             <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"

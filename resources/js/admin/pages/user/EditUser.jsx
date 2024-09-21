@@ -4,18 +4,18 @@ import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useEffect, useState} from "react";
 
-export default function EditCategory() {
-    const { state: categoryData } = useLocation();
-    const [categoryFormData, setCategoryFormData] = useImmer({
+export default function EditUser() {
+    const { state: userData } = useLocation();
+    const [userFormData, setuserFormData] = useImmer({
         _method: 'PUT',
-        ...categoryData
+        ...userData
     });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
     // update input state onchange event
     function updateFormData(property, value) {
-        setCategoryFormData((draft) => {
+        setuserFormData((draft) => {
             draft[property] = value;
         });
     }
@@ -24,11 +24,11 @@ export default function EditCategory() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post(`categories/${categoryFormData.id}`, useFormData(categoryFormData))
+        $axios.post(`users/${userFormData.id_enc}`, useFormData(userFormData))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');
-                navigate("/admin/categories");
+                navigate("/admin/users");
             })
             .catch(e => {
                 toast.dismiss();
@@ -64,15 +64,15 @@ export default function EditCategory() {
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
-                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Name
+                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                                Username
                             </label>
                             <div className="mt-2">
                                 <input type="text"
-                                       value={categoryFormData.name}
-                                       onInput={(e) => updateFormData('name', e.target.value)}
-                                       name="name"
-                                       id="name"
+                                       value={userFormData.username}
+                                       onInput={(e) => updateFormData('username', e.target.value)}
+                                       name="username"
+                                       id="username"
                                        autoComplete="given-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
@@ -80,15 +80,15 @@ export default function EditCategory() {
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="slug" className="block text-sm font-medium leading-6 text-gray-900">
-                                Slug
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                Email
                             </label>
                             <div className="mt-2">
-                                <input type="text"
-                                       name="slug"
-                                       value={categoryFormData.slug}
-                                       onInput={(e) => updateFormData('slug', e.target.value)}
-                                       id="slug"
+                                <input type="email"
+                                       name="email"
+                                       value={userFormData.email}
+                                       onInput={(e) => updateFormData('email', e.target.value)}
+                                       id="email"
                                        autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
@@ -96,14 +96,14 @@ export default function EditCategory() {
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="description"
-                                   className="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                            <label htmlFor="bio"
+                                   className="block text-sm font-medium leading-6 text-gray-900">Bio</label>
                             <div className="mt-2">
                                 <textarea
-                                  id="description"
-                                  name="description"
-                                  value={categoryFormData.description}
-                                  onInput={(e) => updateFormData('description', e.target.value)}
+                                  id="bio"
+                                  name="bio"
+                                  value={userFormData.bio}
+                                  onInput={(e) => updateFormData('bio', e.target.value)}
                                   rows="3"
                                   className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                       'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
@@ -118,7 +118,7 @@ export default function EditCategory() {
                             <div className="mt-2">
                                 <select name="Status"
                                         id="status"
-                                        value={categoryFormData.status}
+                                        value={userFormData.status}
                                         onChange={(e) => updateFormData('status', e.target.value)}
                                         autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
@@ -133,7 +133,7 @@ export default function EditCategory() {
             </div>
 
             <div className="mt-6 flex items-center justify-end gap-x-6">
-                <Link to="/admin/categories" type="button" className="custom-btn-border-gray-300">Back</Link>
+                <Link to="/admin/users" type="button" className="custom-btn-border-gray-300">Back</Link>
                 <button className="custom-btn-primary">Save</button>
             </div>
         </form>

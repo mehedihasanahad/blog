@@ -40,7 +40,7 @@ export default function User() {
                             }
                         </td>
                         <td className="p-4 py-5">
-                            <Link to={'/admin/categories/edit/' + item?.id} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
+                            <Link to={'/admin/users/edit/' + item?.id_enc} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
                         </td>
                     </tr>
                 );
