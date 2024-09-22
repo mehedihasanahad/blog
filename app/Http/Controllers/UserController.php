@@ -160,4 +160,18 @@ class UserController extends Controller
             ->commonJSONResponse('Login successfully', 200, 'success', $user);
         
     }
+
+    /**
+     * Logout functionality
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()
+            ->commonJSONResponse('Logout successfully');
+    }
 }
