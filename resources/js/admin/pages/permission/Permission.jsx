@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 export default function Permission() {
     // const userInfo = useContext(userInfoContext);
     // console.log(userInfo);
+    const [reRender, setReRender] = useState(true);
 
     function handleDelete(id) {
         toast.loading('Loading...');
@@ -16,6 +17,7 @@ export default function Permission() {
         })).then(res => {
             toast.dismiss();
             toast.success(res?.data.message ?? 'Success');
+            setReRender(!reRender);
         })
         .catch(e => {
             toast.dismiss();
@@ -59,7 +61,7 @@ export default function Permission() {
            <div className="flex justify-end mb-2">
                 <Link to="/admin/permissions/create" className="custom-btn-sky-600">Create Permission</Link>
             </div>
-            <DataTables endPoint="permissions" config={config}/>
+            <DataTables endPoint="permissions" config={config} reRender={reRender}/>
         </>
     )
 }

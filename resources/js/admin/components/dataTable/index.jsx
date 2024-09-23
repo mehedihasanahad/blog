@@ -4,7 +4,7 @@ import TableSearch from "@/admin/components/dataTable/TableSearch";
 import {Vortex} from 'react-loader-spinner'
 import {useEffect, useState} from "react";
 
-export default function DataTables({ endPoint, config }) {
+export default function DataTables({ endPoint, config, reRender }) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -12,7 +12,7 @@ export default function DataTables({ endPoint, config }) {
     const [limit, setLimit] = useState('10');
     const [search, setSearch] = useState('');
 
-    useEffect(getBlogPostsFn, [limit, page, search]);
+    useEffect(getBlogPostsFn, [limit, page, search, reRender]);
 
     function getBlogPostsFn() {
         setLoading(true);
