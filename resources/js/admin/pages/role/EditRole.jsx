@@ -4,7 +4,7 @@ import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useEffect, useState} from "react";
 
-export default function EditUser() {
+export default function EditRole() {
     const { state: userData } = useLocation();
     const [userFormData, setuserFormData] = useImmer({
         _method: 'PUT',

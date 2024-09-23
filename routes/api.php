@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -27,15 +28,17 @@ use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['web'])->group(function() {
 
+    Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
+    Route::get('/tags/active', [TagController::class, 'getActiveList']);
+    Route::get('/permissions/active', [PermissionController::class, 'getActiveList']);
+
+
     Route::apiResource('posts', PostController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('tags', TagController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('permissions', PermissionController::class);
-
-
-    Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
-    Route::get('/tags/active', [TagController::class, 'getActiveList']);
+    Route::apiResource('roles', RoleController::class);
 
 
     Route::post('/login', [UserController::class, 'login']);
