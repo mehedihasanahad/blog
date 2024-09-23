@@ -15,7 +15,7 @@ export default function Blog() {
         handler: (data) => {
             return data && data.map( (item, index) => {
                 return (
-                    <tr className="hover:bg-slate-50 border-b border-slate-200" key={item?.id}>
+                    <tr className="hover:bg-slate-50 border-b border-slate-200" key={item?.id_enc}>
                         <td className="px-3 py-2">
                             <p className="block font-semibold text-sm text-slate-800"> { index + 1 } </p>
                         </td>

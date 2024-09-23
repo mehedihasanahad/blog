@@ -24,6 +24,8 @@ class User extends Authenticatable
      */
     protected $appends = ['id_enc'];
 
+    protected $hidden = ['id'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,7 +42,7 @@ class User extends Authenticatable
         return UserFactory::new();
     }
 
-        /**
+    /**
      * @return Attribute
      */
     protected function idEnc() : Attribute {

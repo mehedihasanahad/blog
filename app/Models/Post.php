@@ -21,6 +21,8 @@ class Post extends Model
      */
     protected $appends = ['id_enc'];
 
+    protected $hidden = ['id'];
+
     /**
      * The attributes that aren't mass assignable.
      *

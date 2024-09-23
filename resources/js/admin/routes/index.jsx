@@ -30,6 +30,11 @@ const User = lazy(() => import('../pages/user/User'));
 const CreateUser = lazy(() => import('../pages/user/CreateUser'));
 const EditUser = lazy(() => import('../pages/user/EditUser'));
 
+// Permission pages
+const Permission = lazy(() => import('../pages/permission/Permission'));
+const CreatePermission = lazy(() => import('../pages/permission/CreatePermission'));
+const EditPermission = lazy(() => import('../pages/permission/EditPermission'));
+
 const router = createBrowserRouter([
     {
         path: "/admin/",
@@ -137,6 +142,30 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<div>Loading...</div>}>
                         <EditUser />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'permissions',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Permission />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'permissions/create',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <CreatePermission />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'permissions/edit/:id',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <EditPermission />
                     </Suspense>
                 )
             },
