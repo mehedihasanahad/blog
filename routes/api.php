@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\FacebookController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -43,5 +44,8 @@ Route::middleware(['web'])->group(function() {
     // google login
     Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+    Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->name('auth.facebook');
+    Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
 
 });

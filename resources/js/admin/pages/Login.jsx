@@ -90,6 +90,15 @@ export default function Login() {
                     Sign in with Google
                   </div>
                 </a>
+
+                <a href={import.meta.env.VITE_APP_URL + '/api/v1/auth/facebook'} className="block mt-2 w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+                  <div className="flex justify-center">
+                    <svg className="mr-2 -ml-1 w-4 h-4 bi bi-facebook" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+                    </svg>
+                    Sign in with Facebook
+                  </div>
+                </a>
               </div>
 
               {/* <p className="text-sm !mt-8 text-center text-gray-800">Don't have an account <a href="javascript:void(0);" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</a></p> */}
