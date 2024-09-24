@@ -12,7 +12,7 @@ export default function Role() {
 
     function handleDelete(id) {
         toast.loading('Loading...');
-        $axios.post(`permissions/${id}`, useFormData({
+        $axios.post(`roles/${id}`, useFormData({
             _method: 'DELETE'
         })).then(res => {
             toast.dismiss();
@@ -47,7 +47,7 @@ export default function Role() {
                             <p className="text-sm text-slate-500"> { item?.guard_name } </p>
                         </td>
                         <td className="p-4 py-5">
-                            <Link to={'/admin/permissions/edit/' + item?.id_enc} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
+                            <Link to={'/admin/roles/edit/' + item?.id_enc} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
                             <button onClick={() => handleDelete(item.id_enc)} className="px-3 py-1 border rounded bg-red-600 text-white ml-3">Delete</button>
                         </td>
                     </tr>

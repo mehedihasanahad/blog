@@ -3,19 +3,30 @@ import { useImmer } from "use-immer";
 import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useEffect, useState} from "react";
+import Select from 'react-select';
 
 export default function EditRole() {
-    const { state: userData } = useLocation();
-    const [userFormData, setuserFormData] = useImmer({
+    const [permissionList, setPermissionList] = useState([]);
+    const { state: roleData } = useLocation();
+    const [roleFormData, setRoleFormData] = useImmer({
         _method: 'PUT',
-        ...userData
+        ...roleData
     });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
+    // get category list data
+    useEffect(() => {
+        $axios.get('permissions/active').then((response) => {
+            setPermissionList([
+                ...response.data.data
+            ]);
+        });
+    }, []);
+
     // update input state onchange event
     function updateFormData(property, value) {
-        setuserFormData((draft) => {
+        setRoleFormData((draft) => {
             draft[property] = value;
         });
     }
@@ -24,11 +35,14 @@ export default function EditRole() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post(`users/${userFormData.id_enc}`, useFormData(userFormData))
+        $axios.post(`roles/${roleFormData.id_enc}`, useFormData({
+            ...roleFormData,
+            permissions: JSON.stringify(roleFormData.permissions)
+        }))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');
-                navigate("/admin/users");
+                navigate("/admin/roles");
             })
             .catch(e => {
                 toast.dismiss();
@@ -60,19 +74,19 @@ export default function EditRole() {
 
     return (
         <form onSubmit={handleFormSubmit} name="categoryForm">
-            <div className="space-y-12">
+                        <div className="space-y-12">
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
-                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                                Username
+                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                                Name
                             </label>
                             <div className="mt-2">
                                 <input type="text"
-                                       value={userFormData.username}
-                                       onInput={(e) => updateFormData('username', e.target.value)}
-                                       name="username"
-                                       id="username"
+                                       value={roleFormData.name}
+                                       onInput={(e) => updateFormData('name', e.target.value)}
+                                       name="name"
+                                       id="name"
                                        autoComplete="given-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
@@ -80,15 +94,15 @@ export default function EditRole() {
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                Email
+                            <label htmlFor="guard_name" className="block text-sm font-medium leading-6 text-gray-900">
+                                Guard Name
                             </label>
                             <div className="mt-2">
-                                <input type="email"
-                                       name="email"
-                                       value={userFormData.email}
-                                       onInput={(e) => updateFormData('email', e.target.value)}
-                                       id="email"
+                                <input type="text"
+                                       name="guard_name"
+                                       value={roleFormData.guard_name}
+                                       onInput={(e) => updateFormData('guard_name', e.target.value)}
+                                       id="guard_name"
                                        autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
@@ -96,36 +110,28 @@ export default function EditRole() {
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="bio"
-                                   className="block text-sm font-medium leading-6 text-gray-900">Bio</label>
-                            <div className="mt-2">
-                                <textarea
-                                  id="bio"
-                                  name="bio"
-                                  value={userFormData.bio}
-                                  onInput={(e) => updateFormData('bio', e.target.value)}
-                                  rows="3"
-                                  className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
-                                      'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
-                                </textarea>
-                            </div>
-                        </div>
-
-                        <div className="sm:col-span-3">
-                            <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
-                                Status
+                            <label htmlFor="permissions" className="block text-sm font-medium leading-6 text-gray-900">
+                                Permissions
                             </label>
                             <div className="mt-2">
-                                <select name="Status"
-                                        id="status"
-                                        value={userFormData.status}
-                                        onChange={(e) => updateFormData('status', e.target.value)}
-                                        autoComplete="family-name"
-                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
-                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
-                                </select>
+                                <Select
+                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                    isMulti
+                                    name="permissions"
+                                    id="permissions"
+                                    options={permissionList}
+                                    getOptionLabel={option => option.name}
+                                    getOptionValue={option => option.id_enc}
+                                    value={roleFormData.permissions}
+                                    onChange={(selectedItems) => {
+                                        setRoleFormData((draft) => {
+                                            draft.permissions = selectedItems;
+                                        })
+                                    }}
+                                    placeholder="Select Categories"
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                />
                             </div>
                         </div>
                     </div>
@@ -133,7 +139,7 @@ export default function EditRole() {
             </div>
 
             <div className="mt-6 flex items-center justify-end gap-x-6">
-                <Link to="/admin/users" type="button" className="custom-btn-border-gray-300">Back</Link>
+                <Link to="/admin/roles" type="button" className="custom-btn-border-gray-300">Back</Link>
                 <button className="custom-btn-primary">Save</button>
             </div>
         </form>

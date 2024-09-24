@@ -135,7 +135,7 @@ export default function CreateRole() {
             </div>
 
             <div className="mt-6 flex items-center justify-end gap-x-6">
-                <Link to="/admin/permissions" type="button" className="custom-btn-border-gray-300">Back</Link>
+                <Link to="/admin/roles" type="button" className="custom-btn-border-gray-300">Back</Link>
                 <button className="custom-btn-primary">Save</button>
             </div>
         </form>

@@ -167,9 +167,11 @@ class PostController extends Controller
             $post->save();
 
             // Categories added through pivote table
-            PostCategory::where('post_id', $id)->delete();
             if (!is_array($categories) || empty($categories))
                 throw new \Exception("Categories must be array and can't be empty");
+            
+            // delete previous category
+            PostCategory::where('post_id', $id)->delete();
 
             foreach($categories as $cat_key => $category) {
                 $category_data = Category::find(Crypt::decryptString($category['id']));
@@ -185,10 +187,12 @@ class PostController extends Controller
             }
 
             // Tags added through pivote table
-            PostTag::where('post_id', $id)->delete();
+            
             if (!is_array($tags) || empty($tags))
                 throw new \Exception("Tags must be array and can't be empty");
 
+            // delete previous tag
+            PostTag::where('post_id', $id)->delete();    
             foreach($tags as $tag_key => $tag) {
                 $tag_data = Tag::find(Crypt::decryptString($tag['id']));
                 if (!$tag_data)
