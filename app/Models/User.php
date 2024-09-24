@@ -11,6 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Crypt;
 
 class User extends Authenticatable
@@ -40,6 +42,14 @@ class User extends Authenticatable
     protected static function newFactory()
     {
         return UserFactory::new();
+    }
+
+    /**
+     * get permissions with role
+     * @return BelongsToMany
+     */
+    public function roles(): BelongsToMany {
+        return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id');
     }
 
     /**

@@ -3,15 +3,28 @@ import { useImmer } from "use-immer";
 import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useState, useEffect} from "react";
+import Select from 'react-select';
 
 export default function CreateUser() {
+    const [roleList, setRoleList] = useState(null);
     const [userFormData, setUserFormData] = useImmer({
         username: '',
         email: '',
         bio: '',
         password: '',
+        roles: [],
         status: 1
     });
+
+    // get role list data
+    useEffect(() => {
+        $axios.get('roles/active').then((response) => {
+            setRoleList([
+                ...response.data.data
+            ]);
+        });
+    }, []);
+
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
@@ -24,7 +37,10 @@ export default function CreateUser() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post('users', useFormData(userFormData))
+        $axios.post('users', useFormData({
+            ...userFormData,
+            roles: JSON.stringify(userFormData.roles)
+        }))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');
@@ -140,6 +156,32 @@ export default function CreateUser() {
                                   className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                       'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
                                 </textarea>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="roles" className="block text-sm font-medium leading-6 text-gray-900">
+                                Roles
+                            </label>
+                            <div className="mt-2">
+                                <Select
+                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                    isMulti
+                                    name="roles"
+                                    id="roles"
+                                    options={roleList}
+                                    getOptionLabel={option => option.name}
+                                    getOptionValue={option => option.id_enc}
+                                    value={userFormData.roles}
+                                    onChange={(selectedItems) => {
+                                        setUserFormData((draft) => {
+                                            draft.roles = selectedItems;
+                                        })
+                                    }}
+                                    placeholder="Select Roles"
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                />
                             </div>
                         </div>
                     </div>

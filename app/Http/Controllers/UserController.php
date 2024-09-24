@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\ModelHasRole;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -23,7 +26,8 @@ class UserController extends Controller
             $limit = request()->limit;
             $search = request()->search;
 
-            $users = User::when(!empty($search), function($q) use ($search) {
+            $users = User::with(['roles'])
+                ->when(!empty($search), function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
                 $q->orWhere('slug', 'like', "%{$search}%");
             })->orderByDesc('id')
@@ -49,7 +53,10 @@ class UserController extends Controller
     public function store(StoreUserRequest $request): JsonResponse
     {
         try {
+            DB::beginTransaction();
+
             $validated_data = $request->validated();
+            $roles = json_decode($validated_data['roles'], true);
 
             $user = new User();
             $user->username = $validated_data['username'];
@@ -57,14 +64,36 @@ class UserController extends Controller
             $user->bio = $validated_data['bio'];
             $user->password = Hash::make($validated_data['password']);
             $user->status = $validated_data['status'];
+            $user->save();
+
+            // Roles added through pivote table
+            if (!is_array($roles) || empty($roles)) 
+                throw new \Exception("Roles must be array and can't be empty");
+
+            foreach($roles as $role_key => $role) {
+                $role_data = Role::find(Crypt::decryptString($role['id_enc']));
+                if (!$role_data)
+                    throw new \Exception('Invalid role data found');
+
+                $model_has_roles = new ModelHasRole();
+                $model_has_roles->model_id = $user->id;
+                $model_has_roles->role_id = $role_data->id;
+                $model_has_roles->model_type = 'App\Models\User';
+                
+                if (empty($model_has_roles->save()))
+                    throw new \Exception('Failed to create new rol_has_permission pivote record');
+            }
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()
                 ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
         }
 
-        if (empty($user->save())) return response()
+        if (empty($user->id ?? null)) return response()
             ->commonJSONResponse('Failed to create new user', 500, 'failed');
+
+        DB::commit();
 
         return response()
             ->commonJSONResponse('User created successfully');
@@ -87,22 +116,52 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string $id): JsonResponse
     {
         try {
+
+            DB::beginTransaction();
+
             $validated_data = $request->validated();
+            $roles = json_decode($validated_data['roles'], true);
 
             $user = User::find(Crypt::decryptString($id));
             $user->username = $validated_data['username'];
             $user->email = $validated_data['email'];
             $user->bio = $validated_data['bio'];
             $user->status = $validated_data['status'];
+            $user->save();
+
+            // Roles added through pivote table
+            if (!is_array($roles) || empty($roles)) 
+                throw new \Exception("Roles must be array and can't be empty");
+
+            // remove previous roles
+            ModelHasRole::where('model_id', $user->id)->delete();
+
+            foreach($roles as $role_key => $role) {
+                $role_data = Role::find(Crypt::decryptString($role['id_enc']));
+                if (!$role_data)
+                    throw new \Exception('Invalid role data found');
+
+                $model_has_roles = new ModelHasRole();
+                $model_has_roles->model_id = $user->id;
+                $model_has_roles->role_id = $role_data->id;
+                $model_has_roles->model_type = 'App\Models\User';
+                
+                if (empty($model_has_roles->save()))
+                    throw new \Exception('Failed to create new rol_has_permission pivote record');
+            }
 
         } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()
                 ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
         }
 
-        if (empty($user->save())) return response()
+        if (empty($user->id ?? null)) return response()
             ->commonJSONResponse('Failed to update the user', 500, 'failed');
 
+        DB::commit();
+        
         return response()
             ->commonJSONResponse('User updated successfully');
     }

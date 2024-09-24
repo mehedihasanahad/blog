@@ -31,6 +31,7 @@ Route::middleware(['web'])->group(function() {
     Route::get('/categories/active', [CategoryController::class, 'getActiveList']);
     Route::get('/tags/active', [TagController::class, 'getActiveList']);
     Route::get('/permissions/active', [PermissionController::class, 'getActiveList']);
+    Route::get('/roles/active', [RoleController::class, 'getActiveList']);
 
 
     Route::apiResource('posts', PostController::class);

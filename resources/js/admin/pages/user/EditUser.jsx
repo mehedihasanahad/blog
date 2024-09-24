@@ -3,19 +3,30 @@ import { useImmer } from "use-immer";
 import { useFormData } from "@/helper";
 import toast from 'react-hot-toast';
 import {useEffect, useState} from "react";
+import Select from 'react-select';
 
 export default function EditUser() {
+    const [roleList, setRoleList] = useState(null);
     const { state: userData } = useLocation();
-    const [userFormData, setuserFormData] = useImmer({
+    const [userFormData, setUserFormData] = useImmer({
         _method: 'PUT',
         ...userData
     });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
+    // get role list data
+    useEffect(() => {
+        $axios.get('roles/active').then((response) => {
+            setRoleList([
+                ...response.data.data
+            ]);
+        });
+    }, []);
+
     // update input state onchange event
     function updateFormData(property, value) {
-        setuserFormData((draft) => {
+        setUserFormData((draft) => {
             draft[property] = value;
         });
     }
@@ -24,7 +35,10 @@ export default function EditUser() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post(`users/${userFormData.id_enc}`, useFormData(userFormData))
+        $axios.post(`users/${userFormData.id_enc}`, useFormData({
+            ...userFormData,
+            roles: JSON.stringify(userFormData.roles)
+        }))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');
@@ -126,6 +140,32 @@ export default function EditUser() {
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="roles" className="block text-sm font-medium leading-6 text-gray-900">
+                                Roles
+                            </label>
+                            <div className="mt-2">
+                                <Select
+                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                    isMulti
+                                    name="roles"
+                                    id="roles"
+                                    options={roleList}
+                                    getOptionLabel={option => option.name}
+                                    getOptionValue={option => option.id_enc}
+                                    value={userFormData.roles}
+                                    onChange={(selectedItems) => {
+                                        setUserFormData((draft) => {
+                                            draft.roles = selectedItems;
+                                        })
+                                    }}
+                                    placeholder="Select Roles"
+                                    className="basic-multi-select"
+                                    classNamePrefix="select"
+                                />
                             </div>
                         </div>
                     </div>

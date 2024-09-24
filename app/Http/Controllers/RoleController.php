@@ -177,10 +177,29 @@ class RoleController extends Controller
         }
 
         if (empty($role->delete())) return response()
-            ->commonJSONResponse('Failed to delete the permission', 500, 'failed');
+            ->commonJSONResponse('Failed to delete the role', 500, 'failed');
         DB::commit();
 
         return response()
-            ->commonJSONResponse('Permission deleted successfully');
+            ->commonJSONResponse('Role deleted successfully');
+    }
+
+    /**
+     * get active category resources.
+     * @return JsonResponse
+     */
+    public function getActiveList(): JsonResponse {
+        try {
+            $roles = Role::orderByDesc('id')->get();
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($roles)) return response()
+            ->commonJSONResponse('Resource not found.', 404, 'failed');
+
+        return response()
+            ->commonJSONResponse('Data retrieved successfully', 200, 'success', $roles);
     }
 }

@@ -128,7 +128,7 @@ export default function EditRole() {
                                             draft.permissions = selectedItems;
                                         })
                                     }}
-                                    placeholder="Select Categories"
+                                    placeholder="Select Permissions"
                                     className="basic-multi-select"
                                     classNamePrefix="select"
                                 />
