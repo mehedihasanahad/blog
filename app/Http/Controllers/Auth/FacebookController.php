@@ -24,6 +24,10 @@ class FacebookController extends Controller
 
     public function handleFacebookCallback(Request $request)
     {
+        if(array_key_exists('error', $request->all())) {
+            return redirect()->intended('/admin/login');
+        }
+        
         // Exchange code for access token
         $response = Http::asForm()->post('https://graph.facebook.com/v14.0/oauth/access_token', [
             'client_id'     => env('FACEBOOK_CLIENT_ID'),
@@ -54,6 +58,10 @@ class FacebookController extends Controller
                 'status' => 1
             ]
         );
+
+        // if user is inactive or blocked 0=inactive; 2=inactive
+        if (in_array(($user->status ?? 0), [0, 2]))
+        return redirect()->intended('/admin/404');
 
         // Log the user in
         Auth::login($user);

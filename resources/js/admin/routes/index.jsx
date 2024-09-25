@@ -6,6 +6,7 @@ import Error from '../error/404.jsx';
 import { lazy, Suspense } from "react";
 
 const Dashboard = lazy(() => import('../pages/Dashboard'));
+const Layout = lazy(() => import('../layout'));
 
 // Post pages
 const Posts = lazy(() => import('../pages/post/Blog'));
@@ -43,8 +44,11 @@ const EditRole = lazy(() => import('../pages/role/EditRole'));
 const router = createBrowserRouter([
     {
         path: "/admin/",
-        Component: lazy(() => import('../layout')),
-        errorElement: <Error/>,
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+                <Layout />
+            </Suspense>
+        ),
         children: [
             {
                 path: 'dashboard',
@@ -208,6 +212,10 @@ const router = createBrowserRouter([
             </Suspense>
         )
     },
+    {
+        path: '/admin/*',
+        element: <Error/>
+    }
 ], {
     // basename: 'admin'
 });

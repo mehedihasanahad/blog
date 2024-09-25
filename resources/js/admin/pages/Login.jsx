@@ -14,8 +14,13 @@ export default function Login() {
         }).then((response) => {
             navigate('/admin/dashboard');
         }).catch((error) => {
+            navigate('/admin/404', {
+              state: {
+                message: error?.response?.data?.message
+              }
+            });
             console.error(error);
-            alert(error?.response.data.message);
+            // alert(error?.response.data.message);
         });
     }
 

@@ -17,6 +17,10 @@ Route::get('/login', function() {
     return view('Admin.app');
 });
 
+Route::get('/404', function() {
+    return view('Admin.app');
+});
+
 Route::middleware('auth.page')->get('/{route_name}', function (string $route_name) {
     return view('Admin.app');
 })->where('route_name', '.*');

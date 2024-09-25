@@ -202,10 +202,25 @@ class UserController extends Controller
                 'email' => ['required', 'email'],
                 'password' => ['required'],
             ]);
+
+            $user = User::where([
+                'email' => $credentials['email']
+            ])->first();
     
-            if (!Auth::attempt($credentials))
+            if (empty($user) || empty(Hash::check($credentials['password'], $user->password)))
                 return response()
                 ->commonJSONResponse('The provided credentials do not match our records.', 401, 'error');
+
+            // if user is inactive or blocked 0=inactive; 2=inactive
+            if (($user->status ?? 0) === 0)
+            return response()
+            ->commonJSONResponse('You are inactive, please contact in support.', 401, 'error'); 
+
+            if (($user->status ?? 0) === 2)
+            return response()
+            ->commonJSONResponse('You are blocked, please contact in support.', 401, 'error');
+
+            Auth::login($user);
 
             $request->session()->regenerate();
 

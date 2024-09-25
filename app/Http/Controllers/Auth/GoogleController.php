@@ -27,6 +27,10 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback(Request $request)
     {
+        if(array_key_exists('error', $request->all())) {
+            return redirect()->intended('/admin/login');
+        }
+        
         // Get access token from Google
         $response = Http::asForm()->post('https://oauth2.googleapis.com/token', [
             'client_id'     => env('GOOGLE_CLIENT_ID'),
@@ -44,16 +48,6 @@ class GoogleController extends Controller
         ])->get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 
         $googleUser = $userResponse->json();
-        
-        $pic = Http::get($googleUser['picture']);
-
-        if (!file_exists('uploads/admin/user/google')) {
-            mkdir('uploads/admin/user/google', 0777, true);
-        }
-
-        $file_name = 'uploads/admin/user/google/google-'.rand(0, 2000).'.jpg';
-
-        file_put_contents($file_name, $pic->body());
 
         // Check if user exists, if not, create a new one
         $user = User::firstOrCreate(
@@ -64,10 +58,28 @@ class GoogleController extends Controller
             [
                 'bio' => json_encode($googleUser),
                 'password' => '',
-                'profile_image' => $file_name,
                 'status' => 1
             ]
         );
+
+        if(empty($user->profile_image)) {
+            $pic = Http::get($googleUser['picture']);
+
+            if (!file_exists('uploads/admin/user/google')) {
+                mkdir('uploads/admin/user/google', 0777, true);
+            }
+    
+            $file_name = 'uploads/admin/user/google/google-'.rand(0, 2000).'.jpg';
+    
+            file_put_contents($file_name, $pic->body());
+    
+            $user->profile_image = $file_name;
+            $user->save();
+        }
+
+        // if user is inactive or blocked 0=inactive; 2=inactive
+        if (in_array(($user->status ?? 0), [0, 2]))
+            return redirect()->intended('/admin/404');
 
         // Log the user in
         Auth::login($user);
