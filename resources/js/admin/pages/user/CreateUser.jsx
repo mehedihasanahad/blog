@@ -10,6 +10,7 @@ export default function CreateUser() {
     const [userFormData, setUserFormData] = useImmer({
         username: '',
         email: '',
+        name: '',
         bio: '',
         password: '',
         roles: [],
@@ -110,6 +111,22 @@ export default function CreateUser() {
                         </div>
 
                         <div className="sm:col-span-3">
+                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                                Name
+                            </label>
+                            <div className="mt-2">
+                                <input type="text"
+                                       name="name"
+                                       value={userFormData.name}
+                                       onInput={(e) => updateFormData('name', e.target.value)}
+                                       id="name"
+                                       autoComplete="family-name"
+                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
                             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                 Password
                             </label>
@@ -144,22 +161,6 @@ export default function CreateUser() {
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="bio"
-                                   className="block text-sm font-medium leading-6 text-gray-900">Bio</label>
-                            <div className="mt-2">
-                                <textarea
-                                  id="bio"
-                                  name="bio"
-                                  value={userFormData.bio}
-                                  onInput={(e) => updateFormData('bio', e.target.value)}
-                                  rows="3"
-                                  className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
-                                      'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
-                                </textarea>
-                            </div>
-                        </div>
-
-                        <div className="sm:col-span-3">
                             <label htmlFor="roles" className="block text-sm font-medium leading-6 text-gray-900">
                                 Roles
                             </label>
@@ -182,6 +183,22 @@ export default function CreateUser() {
                                     className="basic-multi-select"
                                     classNamePrefix="select"
                                 />
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="bio"
+                                   className="block text-sm font-medium leading-6 text-gray-900">Bio</label>
+                            <div className="mt-2">
+                                <textarea
+                                  id="bio"
+                                  name="bio"
+                                  value={userFormData.bio}
+                                  onInput={(e) => updateFormData('bio', e.target.value)}
+                                  rows="3"
+                                  className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                      'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
+                                </textarea>
                             </div>
                         </div>
                     </div>

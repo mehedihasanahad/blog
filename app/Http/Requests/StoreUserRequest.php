@@ -24,6 +24,7 @@ class StoreUserRequest extends FormRequest
         return [
             'username' => 'required|unique:App\Models\User,username|string',
             'email' => 'required|email|string',
+            'name' => 'required|string',
             'password' => 'required',
             'bio' => 'required',
             'roles' => 'required',

@@ -61,6 +61,7 @@ class UserController extends Controller
             $user = new User();
             $user->username = $validated_data['username'];
             $user->email = $validated_data['email'];
+            $user->name = $validated_data['name'];
             $user->bio = $validated_data['bio'];
             $user->password = Hash::make($validated_data['password']);
             $user->status = $validated_data['status'];
@@ -125,6 +126,7 @@ class UserController extends Controller
             $user = User::find(Crypt::decryptString($id));
             $user->username = $validated_data['username'];
             $user->email = $validated_data['email'];
+            $user->name = $validated_data['name'];
             $user->bio = $validated_data['bio'];
             $user->status = $validated_data['status'];
             $user->save();
