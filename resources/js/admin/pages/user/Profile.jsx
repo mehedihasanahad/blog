@@ -13,6 +13,7 @@ export default function Profile() {
         username: '',
         name: '',
         bio: '',
+        email: '',
         profile_image: '',
         profile_img_url: '',
         roles: [],
@@ -30,6 +31,7 @@ export default function Profile() {
         userInfo && setUserFormData((draft) => {
             draft.username = userInfo.username;
             draft.name = userInfo.name;
+            draft.email = userInfo.email;
             draft.roles = userInfo.roles;
             draft.profile_image = userInfo.profile_image;
             draft.bio = userInfo.bio;
@@ -48,6 +50,7 @@ export default function Profile() {
         $axios.post(`update-profile/${userInfo.id_enc}`, useFormData({
             '_method': 'PUT',
             ...userProfileData,
+            email: '',
             roles: []
         }))
             .then(res => {
@@ -112,6 +115,23 @@ export default function Profile() {
                                         accept="image/*"
                                         className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                             'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 bg-white'}/>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Email
+                                </label>
+                                <div className="mt-2">
+                                    <input type="email"
+                                        name="email"
+                                        disabled={true}
+                                        value={userProfileData.email}
+                                        onInput={(e) => updateFormData('email', e.target.value)}
+                                        id="email"
+                                        autoComplete="family-name"
+                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
                                 </div>
                             </div>
                             
