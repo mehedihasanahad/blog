@@ -65,7 +65,7 @@ export default function EditTag() {
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Name
+                                Name <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -81,7 +81,7 @@ export default function EditTag() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="slug" className="block text-sm font-medium leading-6 text-gray-900">
-                                Slug
+                                Slug <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -97,7 +97,7 @@ export default function EditTag() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
-                                Status
+                                Status <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <select name="Status"

@@ -160,8 +160,8 @@ class PostController extends Controller
             $post->title = $validated_data['title'];
             $post->slug = $validated_data['slug'];
             $post->content = $validated_data['content'];
-            if (!empty($validated_data['featured_image']))
-                $post->featured_image = "/uploads/" . $validated_data['featured_image']->store('admin/post');
+            if (!empty($request->featured_image) && is_object($request->featured_image))
+                $post->featured_image = "/uploads/" . $request->featured_image->store('admin/post');
             $post->is_published = $validated_data['is_published'];
             $post->published_at = Carbon::now();
             $post->save();

@@ -95,7 +95,7 @@ export default function CreateBlog() {
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Name
+                                Name <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -110,7 +110,7 @@ export default function CreateBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="slug" className="block text-sm font-medium leading-6 text-gray-900">
-                                Slug
+                                Slug <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -125,7 +125,7 @@ export default function CreateBlog() {
                         
                         <div className="sm:col-span-3">
                             <label htmlFor="categories" className="block text-sm font-medium leading-6 text-gray-900">
-                                Category
+                                Category <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Select
@@ -151,7 +151,7 @@ export default function CreateBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="tags" className="block text-sm font-medium leading-6 text-gray-900">
-                                Tag
+                                Tag <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Select
@@ -177,7 +177,7 @@ export default function CreateBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
-                                Status
+                                Status <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <select name="Status"
@@ -194,7 +194,7 @@ export default function CreateBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="f_image" className="block text-sm font-medium leading-6 text-gray-900">
-                                Featured image
+                                Featured image <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="file"
@@ -218,7 +218,7 @@ export default function CreateBlog() {
 
                         <div className="sm:col-span-6">
                             <label htmlFor="content" className="block text-sm font-medium leading-6 text-gray-900">
-                                Content
+                                Content <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Editor

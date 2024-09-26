@@ -45,12 +45,14 @@ Route::middleware(['web'])->group(function() {
     Route::post('/login', [UserController::class, 'login']);
     Route::get('/logout', [UserController::class, 'logout']);
     Route::get('/get-userinfo', [UserController::class, 'getUserInfo']);
+    Route::put('/update-profile/{id}', [UserController::class, 'updateProfile']);
 
 
     // google login
     Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+    // facebook login
     Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->name('auth.facebook');
     Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
 

@@ -75,7 +75,7 @@ export default function CreateRole() {
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Name
+                                Name <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -91,7 +91,7 @@ export default function CreateRole() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="guard_name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Guard Name
+                                Guard Name <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -107,7 +107,7 @@ export default function CreateRole() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="permissions" className="block text-sm font-medium leading-6 text-gray-900">
-                                Permissions
+                                Permissions <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Select

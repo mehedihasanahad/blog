@@ -250,4 +250,37 @@ class UserController extends Controller
         return response()
             ->commonJSONResponse('Logout successfully');
     }
+
+    /**
+     * update profile
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function updateProfile(Request $request, string $id): JsonResponse {
+        try {
+            $userInfo = $request->validate([
+                'name' => ['required'],
+                'username' => ['required'],
+                'bio' => 'nullable'
+            ]);
+    
+            $user = User::find(Crypt::decryptString($id));
+            $user->username = $userInfo['username'];
+            $user->name = $userInfo['name'];
+            $user->bio = $userInfo['bio'];
+            if (!empty($request->profile_image) && is_object($request->profile_image))
+            $user->profile_image = "/uploads/" . $request->profile_image->store('admin/user');
+
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}", 500, 'error');
+        }
+
+        if (empty($user->save())) return response()
+        ->commonJSONResponse('Failed to update the user', 500, 'failed');
+
+        return response()
+            ->commonJSONResponse('Profile updated successfully', 200, 'success');
+    }
 }

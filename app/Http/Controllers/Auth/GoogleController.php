@@ -69,7 +69,7 @@ class GoogleController extends Controller
                 mkdir('uploads/admin/user/google', 0777, true);
             }
     
-            $file_name = 'uploads/admin/user/google/google-'.rand(0, 2000).'.jpg';
+            $file_name = '/uploads/admin/user/google/google-'.rand(0, 2000).'.jpg';
     
             file_put_contents($file_name, $pic->body());
     

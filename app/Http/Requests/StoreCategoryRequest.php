@@ -25,7 +25,7 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name' => 'required|unique:App\Models\Category,name|string',
             'slug' => 'required|unique:App\Models\Category,slug|string',
-            'description' => 'required',
+            'description' => 'nullable',
             'status' => 'required',
         ];
     }

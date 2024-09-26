@@ -41,6 +41,8 @@ const Role = lazy(() => import('../pages/role/Role'));
 const CreateRole = lazy(() => import('../pages/role/CreateRole'));
 const EditRole = lazy(() => import('../pages/role/EditRole'));
 
+const Profile = lazy(() => import('../pages/user/Profile'));
+
 const router = createBrowserRouter([
     {
         path: "/admin/",
@@ -151,6 +153,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<div>Loading...</div>}>
                         <EditUser />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'users/profile',
+                element: (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Profile />
                     </Suspense>
                 )
             },

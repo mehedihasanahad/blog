@@ -25,7 +25,7 @@ class UpdateUserRequest extends FormRequest
             'username' => 'required|string',
             'email' => 'required|email|string',
             'name' => 'required|string',
-            'bio' => 'required',
+            'bio' => 'nullable',
             'roles' => 'required',
             'status' => 'required'
         ];

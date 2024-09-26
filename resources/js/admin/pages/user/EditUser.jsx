@@ -79,7 +79,7 @@ export default function EditUser() {
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
                             <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                                Username
+                                Username <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -95,7 +95,7 @@ export default function EditUser() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                Email
+                                Email <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="email"
@@ -111,7 +111,7 @@ export default function EditUser() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                Name
+                                Name <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -127,7 +127,7 @@ export default function EditUser() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
-                                Status
+                                Status <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <select name="Status"
@@ -145,7 +145,7 @@ export default function EditUser() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="roles" className="block text-sm font-medium leading-6 text-gray-900">
-                                Roles
+                                Roles <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Select
