@@ -28,7 +28,7 @@ function Header({ onClickFn }) {
               <i className="fa-solid fa-right-to-bracket text-2xl transition-all duration-300 text-gray-400 hover:text-blue-400"></i>
           </div>
 
-          <form className="hidden lg:block">
+          {/* <form className="hidden lg:block">
             <label form="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
             <div className="relative">
               <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -37,7 +37,7 @@ function Header({ onClickFn }) {
               <input type="search" id="default-search" className="focus:outline-none block p-3 pl-10 w-[700px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search here..." required />
               <button type="submit" className="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
             </div>
-          </form>
+          </form> */}
         </div>
 
         {/* Right side content */}
