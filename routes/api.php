@@ -5,11 +5,11 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardReport;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,5 +55,10 @@ Route::middleware(['web'])->group(function() {
     // facebook login
     Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->name('auth.facebook');
     Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
+
+    
+    // dashboard report
+    Route::get('card-reports', [DashboardReport::class, 'getCardReport']);
+    Route::get('chart-reports', [DashboardReport::class, 'getChartReport']);
 
 });

@@ -32,7 +32,7 @@ export default function Layout() {
                 <Sidebar onClickFn={toggleSidebarFn}/>
                 <div className="w-full">
                     <Header onClickFn={toggleSidebarFn}/>
-                    <main className="bg-[#EEF3F8] p-7 min-h-[calc(100vh-8.75rem)]">
+                    <main className="bg-[#EEF3F8] py-7 px-10 min-h-[calc(100vh-8.75rem)]">
                         <Toaster
                             position="top-center"
                             reverseOrder={false}
