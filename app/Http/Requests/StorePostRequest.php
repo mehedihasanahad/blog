@@ -31,6 +31,7 @@ class StorePostRequest extends FormRequest
                 'mimes:jpg,bmp,webp,svg,png',
                 // 'dimensions:ratio=3/2'
             ],
+            'is_featured' => 'required',
             'categories' => 'required',
             'tags' => 'required',
             'is_published' => 'required',

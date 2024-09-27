@@ -52,6 +52,7 @@ class TagController extends Controller
             $tag = new Tag();
             $tag->name = $validated_data['name'];
             $tag->slug = $validated_data['slug'];
+            $tag->image = "/uploads/" . $validated_data['image']->store('admin/tag');
             $tag->status = $validated_data['status'];
 
         } catch (\Exception $e) {
@@ -85,6 +86,8 @@ class TagController extends Controller
             $tag = Tag::find(Crypt::decryptString($id));
             $tag->name = $validated_data['name'];
             $tag->slug = $validated_data['slug'];
+            if (!empty($request->image) && is_object($request->image))
+                $tag->image = "/uploads/" . $request->image->store('admin/tag');
             $tag->status = $validated_data['status'];
 
         } catch (\Exception $e) {

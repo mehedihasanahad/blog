@@ -15,6 +15,7 @@ export default function CreateBlog() {
         slug: '',
         contentRaw: '',
         content: '',
+        is_featured: 0,
         is_published: 0,
         featured_image: '',
         featured_image_url: '',
@@ -193,8 +194,25 @@ export default function CreateBlog() {
                         </div>
 
                         <div className="sm:col-span-3">
+                            <label htmlFor="featured" className="block text-sm font-medium leading-6 text-gray-900">
+                                Featured <span className="text-red-700 text-lg">*</span>
+                            </label>
+                            <div className="mt-2">
+                                <select name="featured"
+                                        id="featured"
+                                        value={postFormData.is_featured}
+                                        onChange={(e) => updateFormData('is_featured', e.target.value)}
+                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
                             <label htmlFor="f_image" className="block text-sm font-medium leading-6 text-gray-900">
-                                Featured image <span className="text-red-700 text-lg">*</span>
+                                Image <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="file"

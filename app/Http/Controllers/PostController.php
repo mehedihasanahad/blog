@@ -74,6 +74,7 @@ class PostController extends Controller
             $post->slug = $validated_data['slug'];
             $post->content = $validated_data['content'];
             $post->featured_image = "/uploads/" . $validated_data['featured_image']->store('admin/post');
+            $post->is_featured = $validated_data['is_featured'];
             $post->is_published = $validated_data['is_published'];
             $post->published_at = Carbon::now();
             $post->save();
@@ -162,6 +163,7 @@ class PostController extends Controller
             $post->content = $validated_data['content'];
             if (!empty($request->featured_image) && is_object($request->featured_image))
                 $post->featured_image = "/uploads/" . $request->featured_image->store('admin/post');
+            $post->is_featured = $validated_data['is_featured'];
             $post->is_published = $validated_data['is_published'];
             $post->published_at = Carbon::now();
             $post->save();

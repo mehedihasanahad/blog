@@ -27,6 +27,7 @@ class UpdatePostRequest extends FormRequest
             'content' => 'required',
             'categories' => 'required',
             'tags' => 'required',
+            'is_featured' => 'required',
             'is_published' => 'required',
         ];
     }

@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Client routes
+Route::get('/', 'Web\WebController@index');
+Route::get('/tag/{id}', 'Web\WebController@individualTag');
+Route::get('/blog/{id}', 'Web\WebController@individualBlog')->name('blog');
+Route::get('/series_content/{blog_id}/{id}', 'Web\WebController@individualSeriesContent')->name('seriesContent');
+
 Route::get('/dashboard', function () {
     return view('Admin.app');
 });

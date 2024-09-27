@@ -24,6 +24,12 @@ class StoreTagRequest extends FormRequest
         return [
             'name' => 'required|unique:App\Models\Tag,name|string',
             'slug' => 'required|unique:App\Models\Tag,slug|string',
+            'image' => [
+                'required',
+                'extensions:jpg,bmp,webp,svg,png',
+                'mimes:jpg,bmp,webp,svg,png',
+                // 'dimensions:ratio=3/2'
+            ],
             'status' => 'required',
         ];
     }

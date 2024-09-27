@@ -5,17 +5,17 @@ import toast from 'react-hot-toast';
 import {useEffect, useState} from "react";
 
 export default function EditTag() {
-    const { state: categoryData } = useLocation();
-    const [categoryFormData, setCategoryFormData] = useImmer({
+    const { state: tagData } = useLocation();
+    const [tagFormData, setTagFormData] = useImmer({
         _method: 'PUT',
-        ...categoryData
+        ...tagData
     });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
     // update input state onchange event
     function updateFormData(property, value) {
-        setCategoryFormData((draft) => {
+        setTagFormData((draft) => {
             draft[property] = value;
         });
     }
@@ -24,7 +24,7 @@ export default function EditTag() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post(`tags/${categoryFormData.id}`, useFormData(categoryFormData))
+        $axios.post(`tags/${tagFormData.id}`, useFormData(tagFormData))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');
@@ -69,7 +69,7 @@ export default function EditTag() {
                             </label>
                             <div className="mt-2">
                                 <input type="text"
-                                       value={categoryFormData.name}
+                                       value={tagFormData.name}
                                        onInput={(e) => updateFormData('name', e.target.value)}
                                        name="name"
                                        id="name"
@@ -86,12 +86,41 @@ export default function EditTag() {
                             <div className="mt-2">
                                 <input type="text"
                                        name="slug"
-                                       value={categoryFormData.slug}
+                                       value={tagFormData.slug}
                                        onInput={(e) => updateFormData('slug', e.target.value)}
                                        id="slug"
                                        autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="image" className="block text-sm font-medium leading-6 text-gray-900">
+                                Image
+                            </label>
+                            <div className="mt-2">
+                                <input type="file"
+                                    name="image"
+                                    // value={postFormData.featured_image}
+                                    onChange={(e) => {
+                                        updateFormData('image', e.target.files?.[0]);
+                                        updateFormData('image_url', URL.createObjectURL(e.target.files?.[0]));
+                                    }}
+                                    id="image"
+                                    accept="image/*"
+                                    className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                        'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 bg-white'}/>
+                            </div>
+                            <div>
+                                {
+                                    tagFormData?.image_url ? 
+                                    <img src={tagFormData?.image_url} height="100" width="100" className="object-contain"/> :
+                                    (
+                                        tagFormData?.image && 
+                                        <img src={tagFormData.image} height="100" width="100" className="object-contain"/>
+                                    )
+                                }
                             </div>
                         </div>
 
@@ -102,7 +131,7 @@ export default function EditTag() {
                             <div className="mt-2">
                                 <select name="Status"
                                         id="status"
-                                        value={categoryFormData.status}
+                                        value={tagFormData.status}
                                         onChange={(e) => updateFormData('status', e.target.value)}
                                         autoComplete="family-name"
                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +

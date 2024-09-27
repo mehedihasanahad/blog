@@ -193,8 +193,25 @@ export default function EditBlog() {
                         </div>
 
                         <div className="sm:col-span-3">
+                            <label htmlFor="is_featured" className="block text-sm font-medium leading-6 text-gray-900">
+                                Featured
+                            </label>
+                            <div className="mt-2">
+                                <select name="is_featured"
+                                        id="is_featured"
+                                        value={postFormData.is_featured}
+                                        onChange={(e) => updateFormData('is_featured', e.target.value)}
+                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
                             <label htmlFor="f_image" className="block text-sm font-medium leading-6 text-gray-900">
-                                Featured image
+                                Image
                             </label>
                             <div className="mt-2">
                                 <input type="file"
