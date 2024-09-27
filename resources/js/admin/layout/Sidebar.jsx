@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 function Sidebar({ onClickFn }) {
     const location = useLocation();
     const currentPath = location.pathname.substring(7);
-    const [userDropdown, setUserDropdown] = useState(false);
 
     return (
         <>
@@ -43,7 +42,8 @@ function Sidebar({ onClickFn }) {
                             (
                                 (
                                     (currentPath === 'categories') ||
-                                    (currentPath === 'categories/create')
+                                    (currentPath === 'categories/create') ||
+                                    currentPath.includes('categories/edit')
                                 ) && ' !bg-gray-200'
                             )
                         }>
@@ -60,7 +60,8 @@ function Sidebar({ onClickFn }) {
                             (
                                 (
                                     (currentPath === 'tags') ||
-                                    (currentPath === 'tags/create')
+                                    (currentPath === 'tags/create') ||
+                                    currentPath.includes('tags/edit')
                                 ) && ' !bg-gray-200'
                             )
                         }>
@@ -77,7 +78,8 @@ function Sidebar({ onClickFn }) {
                             (
                                 (
                                     (currentPath === 'posts') ||
-                                    (currentPath === 'posts/create')
+                                    (currentPath === 'posts/create') ||
+                                    currentPath.includes('posts/edit')
                                 ) && ' !bg-gray-200'
                             )
                         }>
@@ -112,7 +114,8 @@ function Sidebar({ onClickFn }) {
                                             (
                                                 (
                                                     (currentPath === 'users') ||
-                                                    (currentPath === 'users/create')
+                                                    (currentPath === 'users/create') ||
+                                                    currentPath.includes('users/edit')
                                                 ) && ' !bg-gray-200'
                                             )
                                         }>
@@ -131,7 +134,8 @@ function Sidebar({ onClickFn }) {
                                             (
                                                 (
                                                     (currentPath === 'roles') ||
-                                                    (currentPath === 'roles/create')
+                                                    (currentPath === 'roles/create') ||
+                                                    currentPath.includes('roles/edit')
                                                 ) && ' !bg-gray-200'
                                             )
                                         }>
@@ -150,7 +154,8 @@ function Sidebar({ onClickFn }) {
                                             (
                                                 (
                                                     (currentPath === 'permissions') ||
-                                                    (currentPath === 'permissions/create')
+                                                    (currentPath === 'permissions/create') ||
+                                                    currentPath.includes('permissions/edit')
                                                 ) && ' !bg-gray-200'
                                             )
                                         }>
