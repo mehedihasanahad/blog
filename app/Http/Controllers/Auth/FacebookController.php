@@ -52,6 +52,7 @@ class FacebookController extends Controller
                 'username' => str_replace(" ", "_", strtolower($facebookUser['name']))
             ],
             [
+                'name' => $facebookUser['name'],
                 'bio' => json_encode($facebookUser),
                 'password' => '',
                 'profile_image' => '',

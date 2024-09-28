@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function() {
     return view('Admin.app');
-});
+})->name('login');
 
 Route::get('/404', function() {
     return view('Admin.app');

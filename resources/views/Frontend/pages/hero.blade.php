@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('Frontend.layout.layout')
 @section('title', 'Hero Page')
 @section('pages')
     <div class="my-2 sm:flex justify-between h-[330px] sm:h-[350px] lg:h-[600px] items-center">
@@ -9,20 +9,20 @@
         top-[90px] right-[15%] bottom-0 left-[15%]
         sm:top-[108px] sm:right-[4%] sm:left-1/2
         lg:top-[148px] lg:right-[8%] lg:left-1/2">
-            @includeIf('subviews.hero-svg')
+            @includeIf('Frontend.subviews.hero-svg')
         </div>
     </div>
 
     <div class="mt-10">
-        <h1 class="text-xl font-semibold tracking-wide">POPULAR TAGS</h1>
+        <h1 class="text-xl font-semibold tracking-wide">POPULAR CATEGORY</h1>
         <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-2 mt-2">
-            @foreach($tags as $key => $tag)
+            @foreach($categories as $key => $category)
                 <div class="relative hover:-translate-y-1.5 transition-all duration-300 cursor-pointer">
-                    <a href="{{URL::to('/tag/'.Crypt::encryptString($tag->id))}}">
-                        <img src="{{url('/'.$tag->small_img)}}" class="h-24 w-full object-cover rounded-2xl"/>
+                    <a href="{{URL::to('/category/'. $category->slug)}}">
+                        <img src="{{asset($category->image)}}" class="h-24 w-full object-cover rounded-2xl"/>
                     </a>
                     <h1 class="absolute bottom-[5%] left-[5%] bg-slate-200 py-1 px-3.5 rounded-[20px] font-thin text-sm">
-                        {{$tag->name}}
+                        {{$category->name}}
                     </h1>
                 </div>
             @endforeach
@@ -36,38 +36,34 @@
                     <article class="w-full mb-8 bg-white shadow-[1px_1px_10px_2px_rgba(0,0,0,0.1)] rounded-2xl p-6 md:grid grid-cols-5 gap-x-8">
                         {{--blog image--}}
                         <div class="col-span-2 overflow-hidden rounded-2xl">
-                            <a href="{{route('blog', ['id' => Crypt::encryptString($blog->id), 'content_type' => $blog->content_type])}}">
-                                <img class="w-full h-64 object-cover hover:scale-105 transition duration-500" src="{{url('/'.$blog->small_img)}}">
+                            <a href="{{route('blog', $blog->slug)}}">
+                                <img class="w-full h-64 object-cover hover:scale-105 transition duration-500" src="{{asset($blog->featured_image)}}">
                             </a>
                         </div>
                         <div class="mt-5 md:mt-0 col-span-3">
                             {{--tag--}}
                             <div class="flex gap-2">
-                                @foreach($blog->tag_ids as $blogTagKey => $bgTag)
-                                    @foreach($tags as $bTagKey => $bTag)
-                                        @if($bTag->id == $bgTag)
-                                            @includeIf('subviews.component.bullet_tag', ['tag' => $bTag])
-                                        @endif
-                                   @endforeach
+                                @foreach($blog->tags as $tagKey => $tag)
+                                    @includeIf('Frontend.subviews.component.bullet_tag', ['tag' => $tag])
                                 @endforeach
                             </div>
                             {{--title--}}
                             <h1 class="mt-2 text-3xl font-bold">
-                                <a href="{{route('blog', ['id' => Crypt::encryptString($blog->id), 'content_type' => $blog->content_type])}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
+                                <a href="{{route('blog', $tag->slug)}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
                                     {{$blog->title}}
                                 </a>
                             </h1>
                             {{--sub title--}}
-                            <p class="mt-2 overflow-ellipsis line-clamp-3">
+                            {{-- <p class="mt-2 overflow-ellipsis line-clamp-3">
                                 {{$blog->sub_title}}
-                            </p>
+                            </p> --}}
                             {{--read time--}}
                             <div class="mt-2 text-slate-400 flex gap-x-4">
                                 <time datetime="2022-05-02">
                                     <svg class="h-4 w-4 inline-block opacity-50" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 64 64"><title>calender</title><path d="M35,36H29a1,1,0,0,1-1-1V29a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,35,36Zm-5-2h4V30H30Z"/><path d="M48,36H42a1,1,0,0,1-1-1V29a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,48,36Zm-5-2h4V30H43Z"/><path d="M48,46H42a1,1,0,0,1-1-1V39a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,48,46Zm-5-2h4V40H43Z"/><path d="M35,46H29a1,1,0,0,1-1-1V39a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,35,46Zm-5-2h4V40H30Z"/><path d="M22,36H16a1,1,0,0,1-1-1V29a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,22,36Zm-5-2h4V30H17Z"/><path d="M22,46H16a1,1,0,0,1-1-1V39a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,22,46Zm-5-2h4V40H17Z"/><path d="M52,51H12a5,5,0,0,1-5-5V18a5,5,0,0,1,5-5h4a1,1,0,0,1,1,1v2a2,2,0,0,0,4,0V14a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2a2,2,0,0,0,4,0V14a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2a2,2,0,0,0,4,0V14a1,1,0,0,1,1-1h4a5,5,0,0,1,5,5V46A5,5,0,0,1,52,51ZM12,15a3,3,0,0,0-3,3V46a3,3,0,0,0,3,3H52a3,3,0,0,0,3-3V18a3,3,0,0,0-3-3H49v1a4,4,0,0,1-8,0V15H36v1a4,4,0,0,1-8,0V15H23v1a4,4,0,0,1-8,0V15Z"/><path d="M56,25H8a1,1,0,0,1,0-2H56a1,1,0,0,1,0,2Z"/><path d="M32,20a4,4,0,0,1-4-4V12a4,4,0,1,1,8,0v4A4,4,0,0,1,32,20Zm0-10a2,2,0,0,0-2,2v4a2,2,0,0,0,4,0V12a2,2,0,0,0-2-2Z"/><path d="M45,20a4,4,0,0,1-4-4V12a4,4,0,1,1,8,0v4A4,4,0,0,1,45,20Zm0-10a2,2,0,0,0-2,2v4a2,2,0,0,0,4,0V12a2,2,0,0,0-2-2Z"/><path d="M19,20a4,4,0,0,1-4-4V12a4,4,0,1,1,8,0v4A4,4,0,0,1,19,20Zm0-10a2,2,0,0,0-2,2v4a2,2,0,0,0,4,0V12a2,2,0,0,0-2-2Z"/></svg>
-                                    {{formateDate($blog->created_date)}}
+                                    {{-- {{formateDate($blog->created_at)}} --}}
                                 </time>
-                                @if(!empty($blog->hour) || !empty($blog->minute) || !empty($blog->second))
+                                {{-- @if(!empty($blog->hour) || !empty($blog->minute) || !empty($blog->second))
                                     <div>
                                         <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
                                         <g>
@@ -90,7 +86,7 @@
                                         read
                                     </span>
                                     </div>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     </article>
@@ -101,14 +97,14 @@
                     <h1 class="text-xl font-semibold tracking-wide">FEATURED POSTS</h1>
                     @foreach($featuredBlogs as $fBlogKey => $fBlog)
                         <article class="flex gap-x-1 mb-6 mt-2">
-                            <img class="w-20 h-20 object-cover rounded-md" src="{{url($fBlog->small_img)}}">
+                            <img class="w-20 h-20 object-cover rounded-md" src="{{asset($fBlog->featured_image)}}">
                             <h3 class="ml-2">
                                 {{--title--}}
-                                <a href="{{route('blog', ['id' => Crypt::encryptString($fBlog->id), 'content_type' => $fBlog->content_type])}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
+                                <a href="{{route('blog', $fBlog->slug)}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
                                     {{$fBlog->title}}
                                 </a>
                                 {{--read time--}}
-                                @if(!empty($fBlog->hour) || !empty($fBlog->minute) || !empty($fBlog->second))
+                                {{-- @if(!empty($fBlog->hour) || !empty($fBlog->minute) || !empty($fBlog->second))
                                     <div>
                                         <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
                                         <g>
@@ -131,7 +127,7 @@
                                         read
                                     </span>
                                     </div>
-                                @endif
+                                @endif --}}
                             </h3>
                         </article>
                     @endforeach

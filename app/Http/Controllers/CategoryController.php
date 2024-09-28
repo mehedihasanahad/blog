@@ -53,6 +53,7 @@ class CategoryController extends Controller
             $category->name = $validated_data['name'];
             $category->slug = $validated_data['slug'];
             $category->description = $validated_data['description'];
+            $category->image = "/uploads/" . $validated_data['image']->store('admin/category');
             $category->status = $validated_data['status'];
 
         } catch (\Exception $e) {
@@ -87,6 +88,8 @@ class CategoryController extends Controller
             $category->name = $validated_data['name'];
             $category->slug = $validated_data['slug'];
             $category->description = $validated_data['description'];
+            if (!empty($request->image) && is_object($request->image))
+                $category->image = "/uploads/" . $request->image->store('admin/category');
             $category->status = $validated_data['status'];
 
         } catch (\Exception $e) {

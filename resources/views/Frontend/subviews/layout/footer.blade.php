@@ -19,14 +19,14 @@
             <h1 class="font-bold text-xl">Latest posts</h1>
             <br/>
             @php
-                $letestblogs = \App\Models\Blog::where(['status' => 1,])->orderByDesc('id')->limit(3)->get(['id', 'title', 'small_img', 'content_type']);
+                $letestblogs = \App\Models\Post::where(['is_published' => 1])->orderByDesc('id')->limit(3)->get();
             @endphp
             @foreach($letestblogs as $bIndex => $latestBlog)
                 <article class="flex gap-x-1 mb-6">
-                    <img class="w-20 h-20 object-cover rounded-md" src="{{url($latestBlog->small_img)}}">
+                    <img class="w-20 h-20 object-cover rounded-md" src="{{asset($latestBlog->featured_image)}}">
                     <h3 class="ml-2">
-                        <a href="{{route('blog', ['id' => Crypt::encryptString($latestBlog->id), 'content_type' => $latestBlog->content_type])}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
-                            {{$latestBlog->title}}
+                        <a href="{{route('blog', $latestBlog->slug)}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
+                            {{$latestBlog->name}}
                         </a>
                         <div>
                             <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
@@ -52,7 +52,7 @@
                 @php
                     $footerTag = \App\Models\Tag::where('status', 1)->get();
                 @endphp
-                @each('subviews.component.bullet_tag', $footerTag, 'tag')
+                @each('Frontend.subviews.component.bullet_tag', $footerTag, 'tag')
             </div>
         </div>
     </div>

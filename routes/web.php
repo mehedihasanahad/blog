@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\WebController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -18,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Client routes
-Route::get('/', 'Web\WebController@index');
-Route::get('/tag/{id}', 'Web\WebController@individualTag');
-Route::get('/blog/{id}', 'Web\WebController@individualBlog')->name('blog');
+Route::get('/', [WebController::class, 'index']);
+Route::get('/category/{slug}', 'Web\WebController@individualTag');
+Route::get('/blog/{slug}', 'Web\WebController@individualBlog')->name('blog');
 Route::get('/series_content/{blog_id}/{id}', 'Web\WebController@individualSeriesContent')->name('seriesContent');
 
 Route::get('/dashboard', function () {

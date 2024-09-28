@@ -56,6 +56,7 @@ class GoogleController extends Controller
                 'username' => str_replace(" ", "_", strtolower($googleUser['name']))
             ],
             [
+                'name' => $googleUser['name'],
                 'bio' => json_encode($googleUser),
                 'password' => '',
                 'status' => 1

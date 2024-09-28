@@ -9,6 +9,8 @@ export default function CreateCategory() {
         name: '',
         slug: '',
         description: '',
+        image: '',
+        image_url: '',
         status: 1
     });
     const [errors, setErrors] = useState(null);
@@ -93,18 +95,26 @@ export default function CreateCategory() {
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="description"
-                                   className="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                            <label htmlFor="image" className="block text-sm font-medium leading-6 text-gray-900">
+                                Image <span className="text-red-700 text-lg">*</span>
+                            </label>
                             <div className="mt-2">
-                                <textarea
-                                  id="description"
-                                  name="description"
-                                  value={categoryFormData.description}
-                                  onInput={(e) => updateFormData('description', e.target.value)}
-                                  rows="3"
-                                  className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
-                                      'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
-                                </textarea>
+                                <input type="file"
+                                    name="image"
+                                    // value={postFormData.featured_image}
+                                    onChange={(e) => {
+                                        updateFormData('image', e.target.files?.[0]);
+                                        updateFormData('image_url', URL.createObjectURL(e.target.files?.[0]));
+                                    }}
+                                    id="image"
+                                    className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                        'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 bg-white'}/>
+                            </div>
+                            <div>
+                                {
+                                    categoryFormData?.image_url && 
+                                    <img src={categoryFormData.image_url} height="100" width="100" className="object-contain"/>
+                                }
                             </div>
                         </div>
 
@@ -123,6 +133,22 @@ export default function CreateCategory() {
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="description"
+                                   className="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                            <div className="mt-2">
+                                <textarea
+                                  id="description"
+                                  name="description"
+                                  value={categoryFormData.description}
+                                  onInput={(e) => updateFormData('description', e.target.value)}
+                                  rows="3"
+                                  className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                      'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0 resize-vertical'}>
+                                </textarea>
                             </div>
                         </div>
                     </div>

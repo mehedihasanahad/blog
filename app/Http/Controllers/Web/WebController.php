@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\SeriesContent;
 use App\Models\Tag;
@@ -14,10 +15,11 @@ use Illuminate\Support\Facades\DB;
 class WebController extends Controller
 {
     public function index() {
-        $tags = Tag::where('status', 1)->get(['id', 'small_img', 'name', 'bullet_color']);
-        $latestblogs = Post::where(['status' => 1])->orderByDesc('id')->take(3)->get(['*', DB::raw("Date(created_at) AS created_date")]);
-        // $featuredBlogs = Blog::where(['status' => 1, 'is_featured' => 1])->orderByDesc('id')->take(4)->get(['id', 'title', 'small_img', 'hour', 'minute', 'second', 'content_type']);
-        return view('pages.hero', compact('tags', 'latestblogs', 'featuredBlogs'));
+        $categories = Category::where('status', 1)->get();
+        $latestblogs = Post::with(['categories', 'tags'])->where(['is_published' => 1])->orderByDesc('id')->take(3)->get();
+        $featuredBlogs = Post::where(['is_published' => 1, 'is_featured' => 1])->orderByDesc('id')->take(4)->get();
+
+        return view('Frontend.pages.hero', compact('categories', 'latestblogs', 'featuredBlogs'));
     }
 
     public function individualTag($id) {

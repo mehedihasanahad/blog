@@ -26,6 +26,12 @@ class StoreCategoryRequest extends FormRequest
             'name' => 'required|unique:App\Models\Category,name|string',
             'slug' => 'required|unique:App\Models\Category,slug|string',
             'description' => 'nullable',
+            'image' => [
+                'required',
+                'extensions:jpg,bmp,webp,svg,png',
+                'mimes:jpg,bmp,webp,svg,png',
+                // 'dimensions:ratio=3/2'
+            ],
             'status' => 'required',
         ];
     }

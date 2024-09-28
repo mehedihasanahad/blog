@@ -17,6 +17,34 @@
     }
 }
 
+@layer utilities {
+    .is-pinned {
+        height: 70px;
+        /* padding-bottom: 50px; */
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .is-pinned > div {
+        height: 70px;
+        align-items: center;
+    }
+    
+    .is-pinned #logo img{
+        width: 75%;
+    }
+    
+    .header-svg {
+        position: absolute;
+        width: auto;
+        height: fit-content;
+        z-index: 1;
+        background: url("./../../public/assets/header-bg.svg") center 15% no-repeat;
+        background-size: contain;
+        overflow:visible;
+    }
+}
+
 /*custom scrollbar style*/
     /* width */
     .custom-scrollbar::-webkit-scrollbar {
@@ -41,16 +69,16 @@
 
 
 /* text editor css */
-.rdw-editor-wrapper {
-    border: 1px solid rgb(206, 205, 205) !important;
-    border-radius: 0 0 5px 5px;
-    background-color: white !important;
-    border-bottom: 1px solid rgb(206, 205, 205) !important;
-}
+    .rdw-editor-wrapper {
+        border: 1px solid rgb(206, 205, 205) !important;
+        border-radius: 0 0 5px 5px;
+        background-color: white !important;
+        border-bottom: 1px solid rgb(206, 205, 205) !important;
+    }
 
-.rdw-editor-main {
-    padding: 0 10px !important;
-    min-height: 200px !important;
-    max-height: 300px !important;
-}
+    .rdw-editor-main {
+        padding: 0 10px !important;
+        min-height: 200px !important;
+        max-height: 300px !important;
+    }
 /* text editor css */

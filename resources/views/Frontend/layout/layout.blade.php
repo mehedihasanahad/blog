@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @vite('resources/css/app.css')
 </head>
 <body class="bg-slate-50 font-regular">
     <header id="header" class="h-fit mt-4 lg:mt-10 sticky top-0 z-50 pb-2">
-        @includeIf('subviews.layout.header')
+        @includeIf('Frontend.subviews.layout.header')
     </header>
 
     <main>
@@ -19,11 +19,10 @@
     </main>
 
     <footer class="bg-white">
-        @includeIf('subviews.layout.footer')
+        @includeIf('Frontend.subviews.layout.footer')
     </footer>
 
     {{--scripts--}}
-    <script type="module" src="{{mix('/js/app.js')}}"></script>
     <script src="{{asset('assets/scripts/js/axios-1.4.0.min.js')}}"></script>
     <script src="{{asset('assets/js/commonFunction.js')}}"></script>
     <script defer>
