@@ -1,5 +1,5 @@
 <div class="border-[1rem] border-white rounded-xl overflow-hidden shadow-[1px_1px_10px_2px_rgba(0,0,0,0.1)]">
-    <img class="h-[25rem] w-full object-cover rounded-xl" src="{{url($blog->image)}}"/>
+    <img class="h-[25rem] w-full object-cover rounded-xl" src="{{url($blog->featured_image)}}"/>
 </div>
 
 <div class="mt-10">
@@ -27,25 +27,38 @@
                     <h1 class="text-xl font-semibold tracking-wide">Featured Posts</h1>
                     @foreach($featuredBlogs as $fIndex => $fBlog)
                         <article class="flex gap-x-1 mb-6 mt-2">
-                            <img class="w-20 h-20 object-cover rounded-md" src="{{url($fBlog->small_img)}}">
+                            <img class="w-20 h-20 object-cover rounded-md" src="{{asset($fBlog->featured_image)}}">
                             <h3 class="ml-2">
                                 {{--title--}}
-                                <a href="{{route('blog', Crypt::encryptString($fBlog->id))}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
+                                <a href="{{route('blog', $fBlog->slug)}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
                                     {{$fBlog->title}}
                                 </a>
                                 {{--read time--}}
                                 <div>
-                                    <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-                                        <g>
-                                            <path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M53.92,10.081   c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838   C22.186-2.027,41.813-2.027,53.92,10.081z"/>
-                                            <polyline fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" points="32,12 32,32 41,41  "/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="4" y1="32" x2="8" y2="32"/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="56" y1="32" x2="60" y2="32"/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="60" x2="32" y2="56"/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="8" x2="32" y2="4"/>
-                                        </g>
-                                    </svg>
-                                    <span class="font-thin text-sm text-slate-400">4 min read</span>
+                                    @if(!empty($fBlog->read_hour) || !empty($fBlog->read_minute) || !empty($fBlog->read_second))
+                                        <div>
+                                            <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                                            <g>
+                                                <path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M53.92,10.081   c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838   C22.186-2.027,41.813-2.027,53.92,10.081z"/>
+                                                <polyline fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" points="32,12 32,32 41,41  "/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="4" y1="32" x2="8" y2="32"/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="56" y1="32" x2="60" y2="32"/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="60" x2="32" y2="56"/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="8" x2="32" y2="4"/>
+                                            </g>
+                                        </svg>
+                                            <span>
+                                            @if($fBlog->read_hour)
+                                                    {{$fBlog->read_hour}} hr
+                                                @elseif($fBlog->read_minute)
+                                                    {{$fBlog->read_minute}} min
+                                                @elseif($fBlog->read_second)
+                                                    {{$fBlog->read_second}} sec
+                                                @endif
+                                            read
+                                        </span>
+                                        </div>
+                                    @endif
                                 </div>
                             </h3>
                         </article>
@@ -58,7 +71,7 @@
                         @php
                             $tags = \App\Models\Tag::where('status', 1)->get();
                         @endphp
-                        @each('subviews.component.bullet_tag', $tags, 'tag')
+                        @each('Frontend.subviews.component.bullet_tag', $tags, 'tag')
                     </div>
                 </div>
 
@@ -66,25 +79,38 @@
                     <h1 class="text-xl font-semibold tracking-wide">Latest posts</h1>
                     @foreach($latestblogs as $lbIndex => $lBlog)
                         <article class="flex gap-x-1 mb-6 mt-2">
-                            <img class="w-20 h-20 object-cover rounded-md" src="{{url($lBlog->small_img)}}">
+                            <img class="w-20 h-20 object-cover rounded-md" src="{{asset($lBlog->featured_image)}}">
                             <h3 class="ml-2">
                                 {{--image--}}
-                                <a href="{{route('blog', Crypt::encryptString($lBlog->id))}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
+                                <a href="{{route('blog', $lBlog->slug)}}" class="decoration-pink-500 hover:underline underline-offset-4 decoration-2 overflow-ellipsis line-clamp-2">
                                     {{$lBlog->title}}
                                 </a>
                                 {{--read time--}}
                                 <div>
-                                    <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-                                        <g>
-                                            <path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M53.92,10.081   c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838   C22.186-2.027,41.813-2.027,53.92,10.081z"/>
-                                            <polyline fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" points="32,12 32,32 41,41  "/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="4" y1="32" x2="8" y2="32"/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="56" y1="32" x2="60" y2="32"/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="60" x2="32" y2="56"/>
-                                            <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="8" x2="32" y2="4"/>
-                                        </g>
-                                    </svg>
-                                    <span class="font-thin text-sm text-slate-400">4 min read</span>
+                                    @if(!empty($lBlog->read_hour) || !empty($lBlog->read_minute) || !empty($lBlog->read_second))
+                                        <div>
+                                            <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                                            <g>
+                                                <path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M53.92,10.081   c12.107,12.105,12.107,31.732,0,43.838c-12.106,12.108-31.734,12.108-43.84,0c-12.107-12.105-12.107-31.732,0-43.838   C22.186-2.027,41.813-2.027,53.92,10.081z"/>
+                                                <polyline fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" points="32,12 32,32 41,41  "/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="4" y1="32" x2="8" y2="32"/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="56" y1="32" x2="60" y2="32"/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="60" x2="32" y2="56"/>
+                                                <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="32" y1="8" x2="32" y2="4"/>
+                                            </g>
+                                        </svg>
+                                            <span>
+                                            @if($lBlog->read_hour)
+                                                    {{$lBlog->read_hour}} hr
+                                                @elseif($lBlog->read_minute)
+                                                    {{$lBlog->read_minute}} min
+                                                @elseif($lBlog->read_second)
+                                                    {{$lBlog->read_second}} sec
+                                                @endif
+                                            read
+                                        </span>
+                                        </div>
+                                    @endif
                                 </div>
                             </h3>
                         </article>

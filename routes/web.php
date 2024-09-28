@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 //Client routes
 Route::get('/', [WebController::class, 'index']);
-Route::get('/category/{slug}', 'Web\WebController@individualTag');
-Route::get('/blog/{slug}', 'Web\WebController@individualBlog')->name('blog');
+Route::get('/category/{slug}', [WebController::class, 'individualCategory']);
+Route::get('/blog/{slug}', [WebController::class, 'individualBlog'])->name('blog');
 Route::get('/series_content/{blog_id}/{id}', 'Web\WebController@individualSeriesContent')->name('seriesContent');
 
 Route::get('/dashboard', function () {

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Error;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
@@ -69,7 +70,7 @@ class PostController extends Controller
 
             // Create Post
             $post = new Post();
-            $post->user_id = 1; // TO-DO:: user_id will auth user id
+            $post->user_id = Auth::user()->id;
             $post->title = $validated_data['title'];
             $post->subtitle = $validated_data['subtitle'];
             $post->slug = $validated_data['slug'];
@@ -161,7 +162,7 @@ class PostController extends Controller
 
             // Update Post
             $post = Post::find($id);
-            $post->user_id = 1; // TO-DO:: user_id will auth user id
+            $post->user_id = Auth::user()->id;
             $post->title = $validated_data['title'];
             $post->subtitle = $validated_data['subtitle'];
             $post->slug = $validated_data['slug'];

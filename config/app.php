@@ -185,5 +185,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
-
+    
+    'app_settings' => [
+        'paginateFirst' => 3
+    ]
 ];

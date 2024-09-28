@@ -1,11 +1,11 @@
-@extends('layout.layout')
-@section('title', $tagDetails->name)
+@extends('Frontend.layout.layout')
+@section('title', $categoryDetails->name)
 @section('pages')
 
     <div>
         {{--tag background image--}}
         <div class="h-64 opacity-20 bg-no-repeat bg-cover bg-center absolute inset-0"
-             style="background-image: linear-gradient(to bottom,transparent, rgb(255, 255, 255, 1)), url('{{url($tagDetails->image)}}');"
+             style="background-image: linear-gradient(to bottom,transparent, rgb(255, 255, 255, 1)), url('{{url($categoryDetails->image)}}');"
         ></div>
 
         {{--main content--}}
@@ -13,13 +13,13 @@
             {{--header part--}}
             <div>
                 <div class="h-40 w-40 rounded-full border-[0.875rem] border-amber-400 mx-auto overflow-hidden">
-                    <img class="object-cover h-40 w-40" src="{{url($tagDetails->small_img)}}"/>
+                    <img class="object-cover h-40 w-40" src="{{url($categoryDetails->image)}}"/>
                 </div>
                 <h1 class=" text-center text-5xl font-bold mt-2">
-                    {{$tagDetails->name}}
+                    {{$categoryDetails->name}}
                 </h1>
                 <p class="mt-2 text-2xl w-[80%] text-center mx-auto font-thin">
-                    {{$tagDetails->details}}
+                    {{$categoryDetails->description}}
                 </p>
             </div>
             {{--body part--}}
