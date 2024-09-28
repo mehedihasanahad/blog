@@ -24,6 +24,7 @@
 
     {{--scripts--}}
     <script src="{{asset('assets/scripts/js/axios-1.4.0.min.js')}}"></script>
+    <script src="{{asset('assets/scripts/alpine@3.14.1.min.js')}}" defer></script>
     <script src="{{asset('assets/js/commonFunction.js')}}"></script>
     <script defer>
         const header = CF.getElementID('header');

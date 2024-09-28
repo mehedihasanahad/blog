@@ -95,7 +95,7 @@ export default function EditBlog() {
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                                Name
+                                Title <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -109,8 +109,23 @@ export default function EditBlog() {
                         </div>
 
                         <div className="sm:col-span-3">
+                            <label htmlFor="subtitle" className="block text-sm font-medium leading-6 text-gray-900">
+                                Subtitle
+                            </label>
+                            <div className="mt-2">
+                                <input type="text"
+                                       value={postFormData.subtitle}
+                                       onInput={(e) => updateFormData('subtitle', e.target.value)}
+                                       name="subtitle"
+                                       id="subtitle"
+                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
                             <label htmlFor="slug" className="block text-sm font-medium leading-6 text-gray-900">
-                                Slug
+                                Slug <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="text"
@@ -125,7 +140,7 @@ export default function EditBlog() {
                         
                         <div className="sm:col-span-3">
                             <label htmlFor="categories" className="block text-sm font-medium leading-6 text-gray-900">
-                                Category
+                                Category <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Select
@@ -151,7 +166,7 @@ export default function EditBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="tags" className="block text-sm font-medium leading-6 text-gray-900">
-                                Tag
+                                Tag <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Select
@@ -177,7 +192,7 @@ export default function EditBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
-                                Status
+                                Status <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <select name="Status"
@@ -194,7 +209,7 @@ export default function EditBlog() {
 
                         <div className="sm:col-span-3">
                             <label htmlFor="is_featured" className="block text-sm font-medium leading-6 text-gray-900">
-                                Featured
+                                Featured <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <select name="is_featured"
@@ -210,8 +225,42 @@ export default function EditBlog() {
                         </div>
 
                         <div className="sm:col-span-3">
+                            <label htmlFor="read_hour" className="block text-sm font-medium leading-6 text-gray-900">
+                                Read Time
+                            </label>
+                            <div className="mt-2 flex gap-x-2">
+                                <input type="number"
+                                name="read_hour"
+                                value={postFormData.read_hour}
+                                onInput={(e) => updateFormData('read_hour', e.target.value)}
+                                id="read_hour"
+                                placeholder="Hour"
+                                className={'w-24 px-2 block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                    'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+
+                                <input type="number"
+                                name="read_minute"
+                                value={postFormData.read_minute}
+                                onInput={(e) => updateFormData('read_minute', e.target.value)}
+                                id="read_minute"
+                                placeholder="Minute"
+                                className={'w-24 px-2 block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                    'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+
+                                <input type="number"
+                                name="read_second"
+                                value={postFormData.read_second}
+                                onInput={(e) => updateFormData('read_second', e.target.value)}
+                                id="read_second"
+                                placeholder="Second"
+                                className={'w-24 px-2 block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                    'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}/>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
                             <label htmlFor="f_image" className="block text-sm font-medium leading-6 text-gray-900">
-                                Image
+                                Image <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <input type="file"
@@ -240,7 +289,7 @@ export default function EditBlog() {
 
                         <div className="sm:col-span-6">
                             <label htmlFor="content" className="block text-sm font-medium leading-6 text-gray-900">
-                                Content
+                                Content <span className="text-red-700 text-lg">*</span>
                             </label>
                             <div className="mt-2">
                                 <Editor

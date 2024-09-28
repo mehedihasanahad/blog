@@ -71,9 +71,13 @@ class PostController extends Controller
             $post = new Post();
             $post->user_id = 1; // TO-DO:: user_id will auth user id
             $post->title = $validated_data['title'];
+            $post->subtitle = $validated_data['subtitle'];
             $post->slug = $validated_data['slug'];
             $post->content = $validated_data['content'];
             $post->featured_image = "/uploads/" . $validated_data['featured_image']->store('admin/post');
+            $post->read_hour = $validated_data['read_hour'] ?? 0;
+            $post->read_minute = $validated_data['read_minute'] ?? 0;
+            $post->read_second = $validated_data['read_second'] ?? 0;
             $post->is_featured = $validated_data['is_featured'];
             $post->is_published = $validated_data['is_published'];
             $post->published_at = Carbon::now();
@@ -159,10 +163,14 @@ class PostController extends Controller
             $post = Post::find($id);
             $post->user_id = 1; // TO-DO:: user_id will auth user id
             $post->title = $validated_data['title'];
+            $post->subtitle = $validated_data['subtitle'];
             $post->slug = $validated_data['slug'];
             $post->content = $validated_data['content'];
             if (!empty($request->featured_image) && is_object($request->featured_image))
                 $post->featured_image = "/uploads/" . $request->featured_image->store('admin/post');
+            $post->read_hour = $validated_data['read_hour'] ?? 0;
+            $post->read_minute = $validated_data['read_minute'] ?? 0;
+            $post->read_second = $validated_data['read_second'] ?? 0;
             $post->is_featured = $validated_data['is_featured'];
             $post->is_published = $validated_data['is_published'];
             $post->published_at = Carbon::now();

@@ -10,6 +10,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Web\WebController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,5 +61,7 @@ Route::middleware(['web'])->group(function() {
     // dashboard report
     Route::get('card-reports', [DashboardReport::class, 'getCardReport']);
     Route::get('chart-reports', [DashboardReport::class, 'getChartReport']);
-
 });
+
+
+Route::get('/get-blogs', [WebController::class, 'getBlogs']);

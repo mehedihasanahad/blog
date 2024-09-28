@@ -23,6 +23,7 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
+            'subtitle' => 'nullable|string',
             'slug' => 'required|unique:App\Models\Category,slug|string',
             'content' => 'required',
             'featured_image' => [
@@ -31,6 +32,9 @@ class StorePostRequest extends FormRequest
                 'mimes:jpg,bmp,webp,svg,png',
                 // 'dimensions:ratio=3/2'
             ],
+            'read_hour' => 'nullable',
+            'read_minute' => 'nullable',
+            'read_second' => 'nullable',
             'is_featured' => 'required',
             'categories' => 'required',
             'tags' => 'required',

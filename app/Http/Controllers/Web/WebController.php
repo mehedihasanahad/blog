@@ -16,7 +16,7 @@ class WebController extends Controller
 {
     public function index() {
         $categories = Category::where('status', 1)->get();
-        $latestblogs = Post::with(['categories', 'tags'])->where(['is_published' => 1])->orderByDesc('id')->take(3)->get();
+        $latestblogs = Post::with(['categories', 'tags'])->select('posts.*', DB::raw("DATE(published_at) AS published_date"))->where(['is_published' => 1])->orderByDesc('id')->take(3)->get();
         $featuredBlogs = Post::where(['is_published' => 1, 'is_featured' => 1])->orderByDesc('id')->take(4)->get();
 
         return view('Frontend.pages.hero', compact('categories', 'latestblogs', 'featuredBlogs'));
@@ -74,9 +74,10 @@ class WebController extends Controller
     }
 
     public function getBlogs() {
-        $blogs = Blog::where(['status' => 1,])
-            ->select(['id', 'title', 'sub_title','tag_ids', 'small_img', 'hour', 'minute', 'second', 'content_type', DB::raw("Date(created_at) AS created_date")])->paginate(3);
-        $blogs->makeHidden(['boolstatus', 'boolfeatured', 'boolcontenttype', 'booltemplate']);
+        $blogs = Post::with(['categories', 'tags'])
+        ->select('posts.*', DB::raw("DATE(published_at) AS published_date"))
+        ->where(['is_published' => 1])
+        ->paginate(3);
 
         return response()->json([
             'blogs' => $blogs,

@@ -54,16 +54,16 @@
                                 </a>
                             </h1>
                             {{--sub title--}}
-                            {{-- <p class="mt-2 overflow-ellipsis line-clamp-3">
-                                {{$blog->sub_title}}
-                            </p> --}}
+                            <p class="mt-2 overflow-ellipsis line-clamp-3">
+                                {{$blog->subtitle ?? ''}}
+                            </p>
                             {{--read time--}}
                             <div class="mt-2 text-slate-400 flex gap-x-4">
-                                <time datetime="2022-05-02">
+                                <time datetime="{{$blog->published_at}}">
                                     <svg class="h-4 w-4 inline-block opacity-50" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 64 64"><title>calender</title><path d="M35,36H29a1,1,0,0,1-1-1V29a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,35,36Zm-5-2h4V30H30Z"/><path d="M48,36H42a1,1,0,0,1-1-1V29a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,48,36Zm-5-2h4V30H43Z"/><path d="M48,46H42a1,1,0,0,1-1-1V39a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,48,46Zm-5-2h4V40H43Z"/><path d="M35,46H29a1,1,0,0,1-1-1V39a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,35,46Zm-5-2h4V40H30Z"/><path d="M22,36H16a1,1,0,0,1-1-1V29a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,22,36Zm-5-2h4V30H17Z"/><path d="M22,46H16a1,1,0,0,1-1-1V39a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1v6A1,1,0,0,1,22,46Zm-5-2h4V40H17Z"/><path d="M52,51H12a5,5,0,0,1-5-5V18a5,5,0,0,1,5-5h4a1,1,0,0,1,1,1v2a2,2,0,0,0,4,0V14a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2a2,2,0,0,0,4,0V14a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2a2,2,0,0,0,4,0V14a1,1,0,0,1,1-1h4a5,5,0,0,1,5,5V46A5,5,0,0,1,52,51ZM12,15a3,3,0,0,0-3,3V46a3,3,0,0,0,3,3H52a3,3,0,0,0,3-3V18a3,3,0,0,0-3-3H49v1a4,4,0,0,1-8,0V15H36v1a4,4,0,0,1-8,0V15H23v1a4,4,0,0,1-8,0V15Z"/><path d="M56,25H8a1,1,0,0,1,0-2H56a1,1,0,0,1,0,2Z"/><path d="M32,20a4,4,0,0,1-4-4V12a4,4,0,1,1,8,0v4A4,4,0,0,1,32,20Zm0-10a2,2,0,0,0-2,2v4a2,2,0,0,0,4,0V12a2,2,0,0,0-2-2Z"/><path d="M45,20a4,4,0,0,1-4-4V12a4,4,0,1,1,8,0v4A4,4,0,0,1,45,20Zm0-10a2,2,0,0,0-2,2v4a2,2,0,0,0,4,0V12a2,2,0,0,0-2-2Z"/><path d="M19,20a4,4,0,0,1-4-4V12a4,4,0,1,1,8,0v4A4,4,0,0,1,19,20Zm0-10a2,2,0,0,0-2,2v4a2,2,0,0,0,4,0V12a2,2,0,0,0-2-2Z"/></svg>
-                                    {{-- {{formateDate($blog->created_at)}} --}}
+                                    {{formateDate($blog->published_date)}}
                                 </time>
-                                {{-- @if(!empty($blog->hour) || !empty($blog->minute) || !empty($blog->second))
+                                @if(!empty($blog->read_hour) || !empty($blog->read_minute) || !empty($blog->read_second))
                                     <div>
                                         <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
                                         <g>
@@ -76,17 +76,17 @@
                                         </g>
                                     </svg>
                                         <span>
-                                        @if($blog->hour)
-                                                {{$blog->hour}} hr
-                                            @elseif($blog->minute)
-                                                {{$blog->minute}} min
-                                            @elseif($blog->second)
-                                                {{$blog->second}} sec
+                                        @if($blog->read_hour)
+                                                {{$blog->read_hour}} hr
+                                            @elseif($blog->read_minute)
+                                                {{$blog->read_minute}} min
+                                            @elseif($blog->read_second)
+                                                {{$blog->read_second}} sec
                                             @endif
                                         read
                                     </span>
                                     </div>
-                                @endif --}}
+                                @endif
                             </div>
                         </div>
                     </article>
@@ -104,7 +104,7 @@
                                     {{$fBlog->title}}
                                 </a>
                                 {{--read time--}}
-                                {{-- @if(!empty($fBlog->hour) || !empty($fBlog->minute) || !empty($fBlog->second))
+                                @if(!empty($fBlog->read_hour) || !empty($fBlog->read_minute) || !empty($fBlog->read_second))
                                     <div>
                                         <svg class="h-4 w-4 inline-block opacity-50 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
                                         <g>
@@ -117,17 +117,17 @@
                                         </g>
                                     </svg>
                                     <span class="opacity-50">
-                                        @if($fBlog->hour)
-                                            {{$fBlog->hour}} hr
-                                        @elseif($fBlog->minute)
-                                            {{$fBlog->minute}} min
-                                        @elseif($fBlog->second)
-                                            {{$fBlog->second}} sec
+                                        @if($fBlog->read_hour)
+                                            {{$fBlog->read_hour}} hr
+                                        @elseif($fBlog->read_minute)
+                                            {{$fBlog->read_minute}} min
+                                        @elseif($fBlog->read_second)
+                                            {{$fBlog->read_second}} sec
                                         @endif
                                         read
                                     </span>
                                     </div>
-                                @endif --}}
+                                @endif
                             </h3>
                         </article>
                     @endforeach
@@ -136,18 +136,11 @@
         </div>
     </div>
 
-    <div class="mt-10" x-data="{
-        blogs: (async function() {return (await axios.get('/api/getBlogs')).data.blogs.data;})(),
-        tags: (async function() {return (await axios.get('/api/getTags')).data.tags;})(),
-        blogsCurrentPage: 1,
-        blogsData: undefined,
-        sigleTag: undefined,
-        loading: false,
-    }">
+    <div class="mt-10" x-data="alpineData" x-init="fetchData()">
         <h1 class="text-xl font-semibold tracking-wide">PREVIOUS POSTS</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-2">
             <template x-for="(blog, i) in blogs" :key="i">
-                @includeIf('subviews.component.alpinejs.cardV2')
+                @includeIf('Frontend.subviews.component.alpinejs.cardV2')
             </template>
         </div>
         <div class="flex justify-center my-8">
@@ -169,4 +162,20 @@
             </button>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('alpineData', () => ({
+                blogs: [],
+                blogsCurrentPage: 1,
+                blogsData: undefined,
+                sigleTag: undefined,
+                loading: false,
+                async fetchData() {
+                    const blogData = await axios.get('/api/v1/get-blogs');
+                    this.blogs = blogData.data.blogs.data;
+                }
+            }))
+        })
+    </script>
 @endsection

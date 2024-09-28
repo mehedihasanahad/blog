@@ -23,10 +23,14 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
+            'subtitle' => 'nullable|string',
             'slug' => 'required|string',
             'content' => 'required',
             'categories' => 'required',
             'tags' => 'required',
+            'read_hour' => 'nullable',
+            'read_minute' => 'nullable',
+            'read_second' => 'nullable',
             'is_featured' => 'required',
             'is_published' => 'required',
         ];
