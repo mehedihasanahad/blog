@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\SeriesContent;
 use App\Models\Tag;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -15,28 +16,38 @@ use Illuminate\Support\Facades\DB;
 class WebController extends Controller
 {
     public function index() {
-        $categories = Category::where('status', 1)->get();
-        $latestblogs = Post::with(['categories', 'tags'])->select('posts.*', DB::raw("DATE(published_at) AS published_date"))->where(['is_published' => 1])->orderByDesc('id')->take(3)->get();
-        $featuredBlogs = Post::where(['is_published' => 1, 'is_featured' => 1])->orderByDesc('id')->take(4)->get();
-
-        return view('Frontend.pages.hero', compact('categories', 'latestblogs', 'featuredBlogs'));
+        try {
+            $categories = Category::where('status', 1)->get();
+            $latestblogs = Post::with(['categories', 'tags'])->select('posts.*', DB::raw("DATE(published_at) AS published_date"))->where(['is_published' => 1])->orderByDesc('id')->take(3)->get();
+            $featuredBlogs = Post::where(['is_published' => 1, 'is_featured' => 1])->orderByDesc('id')->take(4)->get();
+    
+            return view('Frontend.pages.hero', compact('categories', 'latestblogs', 'featuredBlogs'));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
-    public function individualCategory($slug) {
-        $paginateFirst = config('app.app_settings.paginateFirst');
-        $categoryDetails = Category::where([
-            'slug' => $slug,
-            'status' => 1
-        ])->first();
+    /**
+     * get blogs list
+     * @return JsonResponse
+     */
+    public function getBlogs(): JsonResponse {
+        try {
+            $blogs = Post::with(['categories', 'tags'])
+            ->select('posts.*', DB::raw("DATE(published_at) AS published_date"))
+            ->where(['is_published' => 1])
+            ->paginate(6);
 
-        $blogs = Post::leftJoin('post_categories AS pc', 'pc.post_id', '=', 'posts.id')
-                 ->where('pc.category_id', $categoryDetails->id)
-                 ->paginate($paginateFirst);
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
 
-        $totalBlog = Post::where('is_published', 1)->count();
+        if (empty($blogs)) return response()
+        ->commonJSONResponse('Failed to fetch blog data', 500, 'failed');
 
-        if ($categoryDetails) return view('Frontend.pages.tag', compact('categoryDetails', 'blogs', 'totalBlog'));
-        else abort(404);
+        return response()
+            ->commonJSONResponse('Fetched blogs data successfully', 200, 'success', $blogs);
     }
 
     public function individualBlog(Request $request, $slug) {
@@ -47,25 +58,25 @@ class WebController extends Controller
         abort(404);
     }
 
-    public function getBlogs() {
-        $blogs = Post::with(['categories', 'tags'])
-        ->select('posts.*', DB::raw("DATE(published_at) AS published_date"))
-        ->where(['is_published' => 1])
-        ->paginate(6);
+    public function individualCategory($slug) {
+        $paginateFirst = config('app.app_settings.paginateFirst');
+        $categoryDetails = Category::where([
+            'slug' => $slug,
+            'status' => 1
+        ])->first();
 
-        return response()->json([
-            'blogs' => $blogs,
-            'status' => 200,
-            'message' => 'success'
-        ]);
+        $totalBlog = Post::where('is_published', 1)->count();
+
+        if ($categoryDetails) return view('Frontend.pages.tag', compact('categoryDetails', 'totalBlog'));
+        else abort(404);
     }
 
-    public function individualTagDataBlogs($id) {
-        $decryptId = Crypt::decryptString($id);
-        $blogs = Blog::where([['status', 1], ['tag_ids', 'like', "%$decryptId%"]])
-            ->select(['id', 'title', 'sub_title','tag_ids', 'small_img', 'hour', 'minute', 'second', 'content_type', DB::raw("Date(created_at) AS created_date")])
-            ->paginate(3);
-        $blogs->makeHidden(['boolstatus', 'boolfeatured', 'boolcontenttype', 'booltemplate']);
+    public function individualCategoryWiseBlogs($slug) {
+        $paginateFirst = config('app.app_settings.paginateFirst');
+        $blogs = Post::with(['categories', 'tags'])
+        ->select('posts.*', DB::raw("DATE(published_at) AS published_date"))
+        ->where('is_published', 1)
+        ->paginate($paginateFirst);
 
         return response()->json([
             'blogs' => $blogs,

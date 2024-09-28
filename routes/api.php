@@ -65,3 +65,4 @@ Route::middleware(['web'])->group(function() {
 
 
 Route::get('/get-blogs', [WebController::class, 'getBlogs']);
+Route::get('/category-wise-blogs/{slug}', [WebController::class, 'individualCategoryWiseBlogs']);

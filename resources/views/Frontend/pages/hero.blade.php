@@ -167,11 +167,11 @@
                 loading: false,
                 async fetchData() {
                     const blogData = await axios.get('/api/v1/get-blogs');
-                    this.blogs = blogData.data.blogs.data;
+                    this.blogs = blogData.data.data.data;
                 },
                 async fetchPaginatedData() {
                     this.loading = true;
-                    const data = (await axios.get(`/api/v1/get-blogs?page=${this.blogsCurrentPage}`)).data.blogs.data;
+                    const data = (await axios.get(`/api/v1/get-blogs?page=${this.blogsCurrentPage}`)).data.data.data;
                     this.loading = false;
                     if (data.length === 0) return;
                     this.blogsCurrentPage += 1;
