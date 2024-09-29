@@ -7,7 +7,6 @@ import OutsideClickHandler from 'react-outside-click-handler';
 function Header({ onClickFn }) {
   const userInfo = useContext(userInfoContext);
   const [profileDropDown, setProfileDropDown] = useState(false);
-  console.log(userInfo);
   const navigate = useNavigate();
 
   function handleLogout() {

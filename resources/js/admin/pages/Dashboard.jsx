@@ -4,12 +4,14 @@ import MonthlyNewMember from "../components/dashboard/charts/MonthlyNewMemberCha
 import Cards from "../components/dashboard/Cards";
 import MonthlyPost from "../components/dashboard/charts/MonthlyPostChart";
 import CategoryWisePost from "../components/dashboard/charts/CategoryWisePostChart";
+import { usePermissionCheck } from "../../helper";
 
 export default function Dashboard() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-    // const userInfo = useContext(userInfoContext);
-    // console.log(userInfo);
+    const hasPermission = usePermissionCheck();
+    const userInfo = useContext(userInfoContext);
+    userInfo && console.log(hasPermission('super-admin'));
 
     useEffect(() => {
         setLoading(true);

@@ -17,6 +17,7 @@ export default function Layout() {
     useEffect(() => {
         $axios.get('get-userinfo')
         .then((response) => {
+            window.$userInfo = response.data.data;
             setUserInfo(response.data.data);
         }).catch((error) => {
             console.error(error.response.message);
