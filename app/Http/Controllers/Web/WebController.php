@@ -65,23 +65,36 @@ class WebController extends Controller
             'status' => 1
         ])->first();
 
-        $totalBlog = Post::where('is_published', 1)->count();
+        $totalBlog = Category::find($categoryDetails->id)->posts()->where('is_published', 1)->count();
 
         if ($categoryDetails) return view('Frontend.pages.tag', compact('categoryDetails', 'totalBlog'));
         else abort(404);
     }
 
-    public function individualCategoryWiseBlogs($slug) {
-        $paginateFirst = config('app.app_settings.paginateFirst');
-        $blogs = Post::with(['categories', 'tags'])
-        ->select('posts.*', DB::raw("DATE(published_at) AS published_date"))
-        ->where('is_published', 1)
-        ->paginate($paginateFirst);
+    /**
+     * get blogs of individual categories
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function individualCategoryWiseBlogs(string $id): JsonResponse {
+        try {
+            $paginateFirst = config('app.app_settings.paginateFirst');
 
-        return response()->json([
-            'blogs' => $blogs,
-            'status' => 200,
-            'message' => 'success'
-        ]);
+            $blogs = Category::find(Crypt::decryptString($id))
+            ->posts()
+            ->where('is_published', 1)
+            ->with(['categories', 'tags'])
+            ->paginate($paginateFirst);
+
+        } catch (\Exception $e) {
+            return response()
+                ->commonJSONResponse("Message: {$e->getMessage()}, Line: {$e->getLine()}, File: {$e->getFile()}", 500, 'error');
+        }
+
+        if (empty($blogs)) return response()
+        ->commonJSONResponse('Failed to fetch blog data', 500, 'failed');
+
+        return response()
+            ->commonJSONResponse('Fetched blogs data successfully', 200, 'success', $blogs);
     }
 }

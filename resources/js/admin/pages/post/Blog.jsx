@@ -30,7 +30,7 @@ export default function Blog() {
                                 {
                                     item?.categories && item?.categories.map( (category) => {
                                         return (
-                                            <div className={"w-fit p-1 border rounded mt-1 ml-1 inline-block bg-gray-600 text-white"} key={category?.id}>
+                                            <div className={"w-fit p-1 border rounded mt-1 ml-1 inline-block bg-gray-600 text-white"} key={category?.id_enc}>
                                                 {category?.name}
                                             </div>
                                         );

@@ -24,7 +24,7 @@ export default function EditCategory() {
     function handleFormSubmit(e) {
         e.preventDefault();
         toast.loading('Loading...');
-        $axios.post(`categories/${categoryFormData.id}`, useFormData(categoryFormData))
+        $axios.post(`categories/${categoryFormData.id_enc}`, useFormData(categoryFormData))
             .then(res => {
                 toast.dismiss();
                 toast.success(res?.data?.message ?? 'Success');

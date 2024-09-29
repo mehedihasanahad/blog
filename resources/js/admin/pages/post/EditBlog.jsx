@@ -150,7 +150,7 @@ export default function EditBlog() {
                                     id="categories"
                                     options={categoryList}
                                     getOptionLabel={option => option.name}
-                                    getOptionValue={option => option.id}
+                                    getOptionValue={option => option.id_enc}
                                     value={postFormData.categories}
                                     onChange={(selectedItems) => {
                                         setPostFormData((draft) => {

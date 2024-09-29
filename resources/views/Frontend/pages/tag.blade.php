@@ -24,7 +24,11 @@
             </div>
             {{--body part--}}
             <div class="mt-10" x-data="alpineData" x-init="fetchData">
-                <p class="text-sm">{{$totalBlog}} POSTS</p>
+                @if($totalBlog)
+                    <p class="text-sm">{{$totalBlog}} POSTS</p>
+                @else
+                    <p class="text-center text-3xl">𝓒𝓸𝓶𝓲𝓷𝓰 𝓢𝓸𝓸𝓷...</p>
+                @endif
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-2">
                     <template x-for="(blog, i) in blogs" :key="i">
                         @includeIf('Frontend.subviews.component.alpinejs.cardV2')
@@ -54,12 +58,12 @@
                 sigleTag: undefined,
                 loading: false,
                 async fetchData() {
-                    const blogData = await axios.get('/api/v1/category-wise-blogs/{{request()->segment(count(request()->segments()))}}');
-                    this.blogs = blogData.data.blogs.data;
+                    const blogData = await axios.get('/api/v1/category-wise-blogs/{{$categoryDetails->id_enc}}');
+                    this.blogs = blogData.data.data.data;
                 },
                 async fetchPaginatedData() {
                     this.loading = true;
-                    const data = (await axios.get(`/api/v1/category-wise-blogs/{{request()->segment(count(request()->segments()))}}?page=${this.blogsCurrentPage}`)).data.blogs.data;
+                    const data = (await axios.get(`/api/v1/category-wise-blogs/{{$categoryDetails->id_enc}}?page=${this.blogsCurrentPage}`)).data.data.data;
                     this.loading = false;
                     if (data.length === 0) return;
                     this.blogsCurrentPage += 1;

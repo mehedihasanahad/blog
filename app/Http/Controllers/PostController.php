@@ -89,13 +89,13 @@ class PostController extends Controller
                 throw new \Exception("Categories must be array and can't be empty");
 
             foreach($categories as $cat_key => $category) {
-                $category_data = Category::find(Crypt::decryptString($category['id']));
+                $category_data = Category::find(Crypt::decryptString($category['id_enc']));
                 if (!$category_data)
                     throw new \Exception('Invalid Category data found');
 
                 $post_category = new PostCategory();
                 $post_category->post_id = $post->id;
-                $post_category->category_id = Crypt::decryptString($category['id']);
+                $post_category->category_id = Crypt::decryptString($category['id_enc']);
                 
                 if (empty($post_category->save()))
                     throw new \Exception('Failed to create new post_category pivote record');
@@ -153,7 +153,7 @@ class PostController extends Controller
             $id = Crypt::decryptString($id);
 
             $categories = json_decode($validated_data['categories'], true);
-            $category_ids = array_map(fn ($category) => Crypt::decryptString($category['id']), $categories);
+            $category_ids = array_map(fn ($category) => Crypt::decryptString($category['id_enc']), $categories);
 
             $tags = json_decode($validated_data['tags'], true);
             $tag_ids = array_map(fn ($tag) => Crypt::decryptString($tag['id']), $tags);
@@ -185,13 +185,13 @@ class PostController extends Controller
             PostCategory::where('post_id', $id)->delete();
 
             foreach($categories as $cat_key => $category) {
-                $category_data = Category::find(Crypt::decryptString($category['id']));
+                $category_data = Category::find(Crypt::decryptString($category['id_enc']));
                 if (!$category_data)
                     throw new \Exception('Invalid Category data found');
 
                 $post_category = new PostCategory();
                 $post_category->post_id = $post->id;
-                $post_category->category_id = Crypt::decryptString($category['id']);
+                $post_category->category_id = Crypt::decryptString($category['id_enc']);
                 
                 if (empty($post_category->save()))
                     throw new \Exception('Failed to update post_category pivote record');
