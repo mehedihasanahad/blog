@@ -2,25 +2,30 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Footer from "./Footer.jsx";
 import Header from './Header.jsx';
 import Sidebar from "./Sidebar.jsx";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import {Toaster} from "react-hot-toast";
 import { userInfoContext } from "../../store/index.js";
+import LoadingBar from "react-top-loading-bar";
 
 export default function Layout() {
     const location = useLocation();
     const navigate = useNavigate();
+    const ref = useRef(null);
     const [userInfo, setUserInfo] = useState(null);
     const toggleSidebarFn = useCallback(() => {
         toggleSidebar();
     }, []);
 
     useEffect(() => {
+        ref.current.continuousStart();
         $axios.get('get-userinfo')
         .then((response) => {
             window.$userInfo = response.data.data;
             setUserInfo(response.data.data);
+            ref.current.complete();
         }).catch((error) => {
             console.error(error.response.message);
+            ref.current.complete();
             navigate('/admin/login');
         });
     }, []);
@@ -30,18 +35,24 @@ export default function Layout() {
     return (
         <div className="flex transition-all duration-300 h-[100vh]">
             <userInfoContext.Provider value={userInfo}>
-                <Sidebar onClickFn={toggleSidebarFn}/>
-                <div className="w-full">
-                    <Header onClickFn={toggleSidebarFn}/>
-                    <main className="bg-[#EEF3F8] py-7 px-10 min-h-[calc(100vh-8.75rem)]">
-                        <Toaster
-                            position="top-center"
-                            reverseOrder={false}
-                        />
-                        <Outlet/>
-                    </main>
-                    <Footer/>
-                </div>
+                <LoadingBar color={"red"} ref={ref} />
+                {
+                    userInfo &&
+                    <>
+                        <Sidebar onClickFn={toggleSidebarFn}/>
+                        <div className="w-full">
+                            <Header onClickFn={toggleSidebarFn}/>
+                            <main className="bg-[#EEF3F8] py-7 px-10 min-h-[calc(100vh-8.75rem)]">
+                                <Toaster
+                                    position="top-center"
+                                    reverseOrder={false}
+                                />
+                                <Outlet/>
+                            </main>
+                            <Footer/>
+                        </div>
+                    </>
+                }
             </userInfoContext.Provider>
         </div>
     )

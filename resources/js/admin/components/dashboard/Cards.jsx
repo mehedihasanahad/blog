@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
+import { usePermissionCheck } from "../../../helper";
+
 
 export default function Cards() {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const hasPermission = usePermissionCheck();
 
     useEffect(() => {
-        setLoading(true);
         $axios.get('card-reports')
         .then( (res) => {
             setData({
                 ...res.data.data
             });
-            setLoading(false);
         })
         .catch(error => {
             console.error(error);
@@ -22,35 +22,41 @@ export default function Cards() {
 
     return (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4">
-            <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-                <div className="p-4 bg-green-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                        </path>
-                    </svg>
+            { hasPermission('dashboard-member-card') &&
+                <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                    <div className="p-4 bg-green-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div className="px-4 text-gray-700">
+                        <h3 className="text-sm tracking-wider">Total Member</h3>
+                        <p className="text-3xl">{data?.total_users ?? 0}</p>
+                    </div>
                 </div>
-                <div className="px-4 text-gray-700">
-                    <h3 className="text-sm tracking-wider">Total Member</h3>
-                    <p className="text-3xl">{data?.total_users ?? 0}</p>
-                </div>
-            </div>
+            }
 
-            <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-                <div className="p-4 bg-amber-600">
-                    <svg className="h-12 w-12 text-white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <g id="add-user-left-6" transform="translate(-2 -2)">
-                            <path id="primary" d="M11,3.41A5.11,5.11,0,0,1,13,3a5,5,0,1,1-4.59,7" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                            <path id="primary-2" data-name="primary" d="M7,5H3M5,7V3m9,10H12a7,7,0,0,0-7,7H5a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1h0A7,7,0,0,0,14,13Z" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                        </g>
-                    </svg>
+            {
+                hasPermission('dashboard-member-card') &&
+
+                <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                    <div className="p-4 bg-amber-600">
+                        <svg className="h-12 w-12 text-white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <g id="add-user-left-6" transform="translate(-2 -2)">
+                                <path id="primary" d="M11,3.41A5.11,5.11,0,0,1,13,3a5,5,0,1,1-4.59,7" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
+                                <path id="primary-2" data-name="primary" d="M7,5H3M5,7V3m9,10H12a7,7,0,0,0-7,7H5a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1h0A7,7,0,0,0,14,13Z" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div className="px-4 text-gray-700">
+                        <h3 className="text-sm tracking-wider">New Member</h3>
+                        <p className="text-3xl">{data?.new_users ?? 0}</p>
+                    </div>
                 </div>
-                <div className="px-4 text-gray-700">
-                    <h3 className="text-sm tracking-wider">New Member</h3>
-                    <p className="text-3xl">{data?.new_users ?? 0}</p>
-                </div>
-            </div>
+            }
 
             <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
                 <div className="p-4 bg-blue-400"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white" fill="none"

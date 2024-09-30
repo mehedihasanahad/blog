@@ -9,6 +9,9 @@ export function useFormData(dataObject) {
 export function usePermissionCheck() {
     return function(permission) {
         let hasAccess = false;
+        if (window.$userInfo.roles.find((role) => role.name === 'super-admin')) {
+            return true;
+        }
         window.$userInfo.roles.forEach(role => {
             hasAccess = role.permissions.some((permissionItem) => permissionItem.name === permission);
         });
