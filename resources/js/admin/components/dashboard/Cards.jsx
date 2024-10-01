@@ -41,7 +41,6 @@ export default function Cards() {
 
             {
                 hasPermission('dashboard-member-card') &&
-
                 <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
                     <div className="p-4 bg-amber-600">
                         <svg className="h-12 w-12 text-white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -84,18 +83,21 @@ export default function Cards() {
                 </div>
             </div>
 
-            <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-                <div className="p-4 bg-indigo-400"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z">
-                        </path>
-                    </svg></div>
-                <div className="px-4 text-gray-700">
-                    <h3 className="text-sm tracking-wider">Total Role</h3>
-                    <p className="text-3xl">{data?.total_roles ?? 0}</p>
+            {
+                hasPermission('dashboard-role-card') &&
+                <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                    <div className="p-4 bg-indigo-400"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z">
+                            </path>
+                        </svg></div>
+                    <div className="px-4 text-gray-700">
+                        <h3 className="text-sm tracking-wider">Total Role</h3>
+                        <p className="text-3xl">{data?.total_roles ?? 0}</p>
+                    </div>
                 </div>
-            </div>
+            }
 
             <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
                 <div className="p-4 bg-gray-400">

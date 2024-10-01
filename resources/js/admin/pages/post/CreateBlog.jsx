@@ -6,6 +6,7 @@ import {useState, useEffect} from "react";
 import Editor from "../../components/editor.jsx";
 import { stateToHTML } from 'draft-js-export-html';
 import Select from 'react-select';
+import { usePermissionCheck } from "../../../helper/index.js";
 
 export default function CreateBlog() {
     const [categoryList, setCategoryList] = useState([]);
@@ -28,6 +29,7 @@ export default function CreateBlog() {
     });
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
+    const hasPermission = usePermissionCheck();
 
 
     // get category list data
@@ -195,39 +197,45 @@ export default function CreateBlog() {
                             </div>
                         </div>
 
-                        <div className="sm:col-span-3">
-                            <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
-                                Status <span className="text-red-700 text-lg">*</span>
-                            </label>
-                            <div className="mt-2">
-                                <select name="Status"
-                                        id="status"
-                                        value={postFormData.is_published}
-                                        onChange={(e) => updateFormData('is_published', e.target.value)}
-                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
-                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
-                                    <option value="1">Publish</option>
-                                    <option value="0">Hide</option>
-                                </select>
+                        {
+                            hasPermission("post-status") &&
+                            <div className="sm:col-span-3">
+                                <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Status <span className="text-red-700 text-lg">*</span>
+                                </label>
+                                <div className="mt-2">
+                                    <select name="Status"
+                                            id="status"
+                                            value={postFormData.is_published}
+                                            onChange={(e) => updateFormData('is_published', e.target.value)}
+                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
+                                        <option value="1">Publish</option>
+                                        <option value="0">Hide</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        }
 
-                        <div className="sm:col-span-3">
-                            <label htmlFor="featured" className="block text-sm font-medium leading-6 text-gray-900">
-                                Featured <span className="text-red-700 text-lg">*</span>
-                            </label>
-                            <div className="mt-2">
-                                <select name="featured"
-                                        id="featured"
-                                        value={postFormData.is_featured}
-                                        onChange={(e) => updateFormData('is_featured', e.target.value)}
-                                       className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
-                                           'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
+{
+                            hasPermission("post-status") &&
+                            <div className="sm:col-span-3">
+                                <label htmlFor="featured" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Featured <span className="text-red-700 text-lg">*</span>
+                                </label>
+                                <div className="mt-2">
+                                    <select name="featured"
+                                            id="featured"
+                                            value={postFormData.is_featured}
+                                            onChange={(e) => updateFormData('is_featured', e.target.value)}
+                                        className={'px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 ' +
+                                            'placeholder:text-gray-400 sm:text-sm sm:leading-6 focus:outline-0'}>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         <div className="sm:col-span-3">
                             <label htmlFor="read_hour" className="block text-sm font-medium leading-6 text-gray-900">

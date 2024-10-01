@@ -1,16 +1,18 @@
 import DataTables from "@/admin/components/dataTable";
 import {Link} from "react-router-dom";
+import { usePermissionCheck } from "../../../helper";
 
 export default function Tag() {
+    const hasPermission = usePermissionCheck();
     const config = {
         header: [
             'SL',
             'Name',
             'Slug',
             'Status',
-            'Actions'
         ],
-        handler: (data) => {
+        handler: function(data) {
+            hasPermission("tag-edit") && (this.header.includes('Actions') ?  '': this.header.push('Actions'));
             return data && data.map( (item, index) => {
                 return (
                     <tr className="hover:bg-slate-50 border-b border-slate-200" key={item?.id}>
@@ -30,9 +32,14 @@ export default function Tag() {
                                     <div className="px-3 py-[2px] border rounded bg-red-600 text-white inline-block">Inactive</div>
                             }
                         </td>
-                        <td className="p-4 py-5">
-                            <Link to={'/admin/tags/edit/' + item?.id} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
-                        </td>
+
+                        {
+                            hasPermission("tag-edit") &&
+                            <td className="p-4 py-5">
+                                <Link to={'/admin/tags/edit/' + item?.id} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
+                            </td>
+                        }
+                        
                     </tr>
                 );
             });
@@ -41,9 +48,12 @@ export default function Tag() {
 
     return (
         <>
-            <div className="flex justify-end mb-2">
-                <Link to="/admin/tags/create" className="custom-btn-sky-600">Create Tag</Link>
-            </div>
+            {
+                hasPermission("tag-create") &&
+                <div className="flex justify-end mb-2">
+                    <Link to="/admin/tags/create" className="custom-btn-sky-600">Create Tag</Link>
+                </div>
+            }
             <DataTables endPoint="tags" config={config}/>
         </>
     )

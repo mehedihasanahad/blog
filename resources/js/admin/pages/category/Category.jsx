@@ -2,10 +2,10 @@ import DataTables from "@/admin/components/dataTable";
 import {Link} from "react-router-dom";
 import { userInfoContext } from "../../../store";
 import { useContext } from "react";
+import { usePermissionCheck } from "../../../helper";
 
 export default function Category() {
-    // const userInfo = useContext(userInfoContext);
-    // console.log(userInfo);
+    const hasPermission = usePermissionCheck();
 
     const config = {
         header: [
@@ -13,9 +13,9 @@ export default function Category() {
             'Name',
             'Slug',
             'Status',
-            'Actions'
         ],
-        handler: (data) => {
+        handler: function (data) {
+            hasPermission("category-edit") && (this.header.includes('Actions') ?  '': this.header.push('Actions'));
             return data && data.map( (item, index) => {
                 return (
                     <tr className="hover:bg-slate-50 border-b border-slate-200" key={item?.id_enc}>
@@ -35,9 +35,12 @@ export default function Category() {
                                     <div className="px-3 py-[2px] border rounded bg-red-600 text-white inline-block">Inactive</div>
                             }
                         </td>
-                        <td className="p-4 py-5">
-                            <Link to={'/admin/categories/edit/' + item?.id_enc} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
-                        </td>
+                        {
+                            hasPermission("category-edit") &&
+                            <td className="p-4 py-5">
+                                <Link to={'/admin/categories/edit/' + item?.id_enc} state={item} className="px-3 py-1 border rounded bg-pink-600 text-white">Edit</Link>
+                            </td>
+                        }
                     </tr>
                 );
             });
@@ -47,7 +50,10 @@ export default function Category() {
     return (
         <>
             <div className="flex justify-end mb-2">
-                <Link to="/admin/categories/create" className="custom-btn-sky-600">Create Category</Link>
+                {
+                    hasPermission("category-create") &&
+                    <Link to="/admin/categories/create" className="custom-btn-sky-600">Create Category</Link>
+                }
             </div>
             <DataTables endPoint="categories" config={config}/>
         </>

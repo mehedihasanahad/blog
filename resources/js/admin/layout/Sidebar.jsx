@@ -1,9 +1,11 @@
 import { memo, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { usePermissionCheck } from "../../helper";
 
 function Sidebar({ onClickFn }) {
     const location = useLocation();
+    const hasPermission = usePermissionCheck();
     const currentPath = location.pathname.substring(7);
 
     return (
@@ -95,88 +97,92 @@ function Sidebar({ onClickFn }) {
                         </Link>
 
                         {/* dropwodn menu */}
-                        <ul className="mt-0 flex flex-col">
-                            <li className="relative transition">
-                                <input className="peer hidden" type="checkbox" id="menu-1" />
-                                <div className="relative m-2 flex items-center rounded-xl border-b-4 border-gray-300 bg-gray-50 py-3 pl-5 text-sm text-gray-500">
-                                    <span className="mr-5 flex w-5 text-gray-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none"
-                                            stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                    User Management
-                                    <label htmlFor="menu-1" className="absolute inset-0 h-full w-full cursor-pointer"></label>
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="peer-checked:rotate-180 absolute right-0 top-6 mr-5 ml-auto h-4 text-gray-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                                </svg>
-                                <ul className="duration-400 peer-checked:max-h-96 m-2 flex max-h-0 flex-col overflow-hidden transition-all duration-300">
-                                    <li className="cursor-pointer rounded-xl py-2 text-sm text-gray-500">
-                                        <Link to="/admin/users" className={
-                                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
-                                            (
-                                                (
-                                                    (currentPath === 'users') ||
-                                                    (currentPath === 'users/create') ||
-                                                    currentPath.includes('users/edit')
-                                                ) && ' !bg-gray-200'
-                                            )
-                                        }>
-                                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <g id="add-user-left-6" transform="translate(-2 -2)">
-                                                    <path id="primary" d="M11,3.41A5.11,5.11,0,0,1,13,3a5,5,0,1,1-4.59,7" fill="none" stroke="gray" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                                                    <path id="primary-2" data-name="primary" d="M7,5H3M5,7V3m9,10H12a7,7,0,0,0-7,7H5a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1h0A7,7,0,0,0,14,13Z" fill="none" stroke="gray" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
-                                                </g>
-                                            </svg>
-                                            Users
-                                        </Link>
-                                    </li>
-
-                                    <li className="cursor-pointer rounded-xl pb-2 text-sm text-gray-500">
-                                        <Link to="/admin/roles" className={
-                                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
-                                            (
-                                                (
-                                                    (currentPath === 'roles') ||
-                                                    (currentPath === 'roles/create') ||
-                                                    currentPath.includes('roles/edit')
-                                                ) && ' !bg-gray-200'
-                                            )
-                                        }>
-                                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        {
+                            hasPermission('user-management') &&
+                            <ul className="mt-0 flex flex-col">
+                                <li className="relative transition">
+                                    <input className="peer hidden" type="checkbox" id="menu-1" />
+                                    <div className="relative m-2 flex items-center rounded-xl border-b-4 border-gray-300 bg-gray-50 py-3 pl-5 text-sm text-gray-500">
+                                        <span className="mr-5 flex w-5 text-gray-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none"
+                                                stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                                </path>
                                             </svg>
-                                            Roles
-                                        </Link>
-                                    </li>
-
-                                    <li className="cursor-pointer rounded-xl pb-2 text-sm text-gray-500">
-                                        <Link to="/admin/permissions" className={
-                                            'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
-                                            (
+                                        </span>
+                                        User Management
+                                        <label htmlFor="menu-1" className="absolute inset-0 h-full w-full cursor-pointer"></label>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="peer-checked:rotate-180 absolute right-0 top-6 mr-5 ml-auto h-4 text-gray-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                    <ul className="duration-400 peer-checked:max-h-96 m-2 flex max-h-0 flex-col overflow-hidden transition-all duration-300">
+                                        <li className="cursor-pointer rounded-xl py-2 text-sm text-gray-500">
+                                            <Link to="/admin/users" className={
+                                                'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
                                                 (
-                                                    (currentPath === 'permissions') ||
-                                                    (currentPath === 'permissions/create') ||
-                                                    currentPath.includes('permissions/edit')
-                                                ) && ' !bg-gray-200'
-                                            )
-                                        }>
-                                            <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                            </svg>
-                                            Permissions
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                                                    (
+                                                        (currentPath === 'users') ||
+                                                        (currentPath === 'users/create') ||
+                                                        currentPath.includes('users/edit')
+                                                    ) && ' !bg-gray-200'
+                                                )
+                                            }>
+                                                <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <g id="add-user-left-6" transform="translate(-2 -2)">
+                                                        <path id="primary" d="M11,3.41A5.11,5.11,0,0,1,13,3a5,5,0,1,1-4.59,7" fill="none" stroke="gray" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
+                                                        <path id="primary-2" data-name="primary" d="M7,5H3M5,7V3m9,10H12a7,7,0,0,0-7,7H5a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1h0A7,7,0,0,0,14,13Z" fill="none" stroke="gray" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/>
+                                                    </g>
+                                                </svg>
+                                                Users
+                                            </Link>
+                                        </li>
+
+                                        <li className="cursor-pointer rounded-xl pb-2 text-sm text-gray-500">
+                                            <Link to="/admin/roles" className={
+                                                'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
+                                                (
+                                                    (
+                                                        (currentPath === 'roles') ||
+                                                        (currentPath === 'roles/create') ||
+                                                        currentPath.includes('roles/edit')
+                                                    ) && ' !bg-gray-200'
+                                                )
+                                            }>
+                                                <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                </svg>
+                                                Roles
+                                            </Link>
+                                        </li>
+
+                                        <li className="cursor-pointer rounded-xl pb-2 text-sm text-gray-500">
+                                            <Link to="/admin/permissions" className={
+                                                'flex items-center px-6 py-2.5 text-gray-500 hover:text-orange-600 group' +
+                                                (
+                                                    (
+                                                        (currentPath === 'permissions') ||
+                                                        (currentPath === 'permissions/create') ||
+                                                        currentPath.includes('permissions/edit')
+                                                    ) && ' !bg-gray-200'
+                                                )
+                                            }>
+                                                <svg className="h-5 w-5 text-gray-400 mr-2 group-hover:text-orange-500" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                </svg>
+                                                Permissions
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        }
+
                     </div>
                     <div className="mb-10">
                         {/* settings */}
