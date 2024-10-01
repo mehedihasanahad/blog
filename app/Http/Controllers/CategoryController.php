@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class CategoryController extends Controller
@@ -55,6 +56,8 @@ class CategoryController extends Controller
             $category->description = $validated_data['description'];
             $category->image = "/uploads/" . $validated_data['image']->store('admin/category');
             $category->status = $validated_data['status'];
+            $category->created_by = Auth::user()->id;
+            $category->updated_by = Auth::user()->id;
 
         } catch (\Exception $e) {
             return response()
@@ -91,6 +94,7 @@ class CategoryController extends Controller
             if (!empty($request->image) && is_object($request->image))
                 $category->image = "/uploads/" . $request->image->store('admin/category');
             $category->status = $validated_data['status'];
+            $category->updated_by = Auth::user()->id;
 
         } catch (\Exception $e) {
             return response()

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class TagController extends Controller
@@ -54,6 +55,8 @@ class TagController extends Controller
             $tag->slug = $validated_data['slug'];
             $tag->image = "/uploads/" . $validated_data['image']->store('admin/tag');
             $tag->status = $validated_data['status'];
+            $tag->created_by = Auth::user()->id;
+            $tag->updated_by = Auth::user()->id;
 
         } catch (\Exception $e) {
             return response()
@@ -89,6 +92,7 @@ class TagController extends Controller
             if (!empty($request->image) && is_object($request->image))
                 $tag->image = "/uploads/" . $request->image->store('admin/tag');
             $tag->status = $validated_data['status'];
+            $tag->updated_by = Auth::user()->id;
 
         } catch (\Exception $e) {
             return response()

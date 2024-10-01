@@ -65,6 +65,8 @@ class UserController extends Controller
             $user->bio = $validated_data['bio'];
             $user->password = Hash::make($validated_data['password']);
             $user->status = $validated_data['status'];
+            $user->created_by = Auth::user()->id;
+            $user->updated_by = Auth::user()->id;
             $user->save();
 
             // Roles added through pivote table
@@ -129,6 +131,7 @@ class UserController extends Controller
             $user->name = $validated_data['name'];
             $user->bio = $validated_data['bio'];
             $user->status = $validated_data['status'];
+            $user->updated_by = Auth::user()->id;
             $user->save();
 
             // Roles added through pivote table

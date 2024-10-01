@@ -81,7 +81,9 @@ class PostController extends Controller
             $post->read_second = $validated_data['read_second'] ?? 0;
             $post->is_featured = $validated_data['is_featured'];
             $post->is_published = $validated_data['is_published'];
-            $post->published_at = Carbon::now();
+            $post->published_at = $validated_data['is_published'] ? Carbon::now() : null;
+            $post->created_by = Auth::user()->id;
+            $post->updated_by = Auth::user()->id;
             $post->save();
 
             // Categories added through pivote table
@@ -174,7 +176,8 @@ class PostController extends Controller
             $post->read_second = $validated_data['read_second'] ?? 0;
             $post->is_featured = $validated_data['is_featured'];
             $post->is_published = $validated_data['is_published'];
-            $post->published_at = Carbon::now();
+            $post->published_at = $validated_data['is_published'] ? Carbon::now() : null;
+            $post->updated_by = Auth::user()->id;
             $post->save();
 
             // Categories added through pivote table
