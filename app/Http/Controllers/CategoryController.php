@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,10 @@ class CategoryController extends Controller
             $categories = Category::when(!empty($search), function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
                 $q->orWhere('slug', 'like', "%{$search}%");
-            })->orderByDesc('id')
+            })->when(!hasPermission('super-admin'), function($q) {
+                $q->where('created_by', Auth::user()->id);
+            })
+            ->orderByDesc('id')
             ->paginate($limit ?? 10);
 
         } catch (\Exception $e) {

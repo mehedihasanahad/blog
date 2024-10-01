@@ -25,6 +25,8 @@ class TagController extends Controller
             $tags = Tag::when(!empty($search), function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
                 $q->orWhere('slug', 'like', "%{$search}%");
+            })->when(!hasPermission('super-admin'), function($q) {
+                $q->where('created_by', Auth::user()->id);
             })->orderByDesc('id')
             ->paginate($limit ?? 10);
 

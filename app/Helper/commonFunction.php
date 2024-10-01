@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 
 function resizeImageAndMoveToDirectories($file, $destination, $width, $height, $fileNamePrefix) {
@@ -30,4 +32,10 @@ function resizeImageAndMoveToDirectories($file, $destination, $width, $height, $
 function formateDate($date) {
     $date = DateTimeImmutable::createFromFormat('Y-m-d', $date);
     return $date->format('F').' '.$date->format('d').','.' '.$date->format('Y');
+}
+
+function hasPermission($permission) {
+    $user_permissions = array_column(User::find(Auth::user()->id)->getAllPermissions()->toArray(), 'name');
+    if (in_array('super-admin', $user_permissions)) return true;
+    return in_array($permission, $user_permissions);
 }
