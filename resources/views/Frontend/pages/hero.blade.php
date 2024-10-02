@@ -1,5 +1,7 @@
 @extends('Frontend.layout.layout')
-@section('title', 'Hero Page')
+@section('title', 'রাইট ওয়েভি')
+@section('description', 'স্বাগতম রাইট ওয়েভি এ, যেখানে আপনি পাবেন তথ্যবহুল নিবন্ধ, বাস্তব পরামর্শ এবং সর্বশেষ প্রবণতাগুলি নিয়ে আলোচনা। আপনি যদি বিশেষজ্ঞ পরামর্শ, ব্যক্তিগত গল্প, বা চিন্তা উদ্দীপক আলোচনা খুঁজছেন, আমাদের ব্লগটি প্রযুক্তি, জীবনধারা, স্বাস্থ্য এবং সৃজনশীলতা সহ বিভিন্ন বিষয়কে কভার করে। আমাদের উৎসাহী পাঠক সম্প্রদায়ের সাথে যোগ দিন এবং অনুপ্রাণিত, তথ্যবহুল এবং বিনোদিত থাকুন।')
+@section('canonical_url', URL('/'))
 @section('pages')
     <div class="my-2 sm:flex justify-between h-[330px] sm:h-[350px] lg:h-[600px] items-center">
         <h1 class="hidden sm:block text-3xl w-1/2 font-bold text-fuchsia-700">

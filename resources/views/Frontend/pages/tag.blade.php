@@ -1,5 +1,7 @@
 @extends('Frontend.layout.layout')
 @section('title', $categoryDetails->name)
+@section('description', $categoryDetails->description)
+@section('canonical_url', URL('/category/'. $categoryDetails->slug))
 @section('pages')
 
     <div>
