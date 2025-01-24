@@ -51,7 +51,7 @@ class DashboardReport extends Controller
             $month_wise_posts = DB::table('posts')
                                     ->select(DB::raw("CONCAT_WS(', ', MONTHNAME(created_at), YEAR(created_at)) AS month_year"), DB::raw("COUNT(id) AS post"))
                                     ->groupByRaw('month_year')
-                                    ->orderByDESC('created_at')
+                                    ->orderByDESC('month_year')
                                     ->limit(12)
                                     ->get();
 
